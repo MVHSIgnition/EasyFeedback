@@ -1,12 +1,13 @@
 from pubnub.callbacks import SubscribeCallback
-from pubnub.enums import PNStatusCategory
+from pubnub.enums import PNStatusCategory, PNOperationType
 from pubnub.pnconfiguration import PNConfiguration
 from pubnub.pubnub import PubNub
  
 pnconfig = PNConfiguration()
  
-pnconfig.subscribe_key = 'demo'
-pnconfig.publish_key = 'demo'
+pnconfig.subscribe_key = 'sub-c-65b59a9e-efce-11e6-87db-0619f8945a4f'
+pnconfig.publish_key = 'pub-c-6c4a2915-5f4a-441e-a4b6-0f8ae6e37422'
+pnconfig.ssl = False
  
 pubnub = PubNub(pnconfig)
  
@@ -44,8 +45,8 @@ class MySubscribeCallback(SubscribeCallback):
             # encrypt messages and on live data feed it received plain text.
  
     def message(self, pubnub, message):
-        pass  # Handle new message stored in message.message
+        pass  # Handle new incoming message stored in message.message
  
  
 pubnub.add_listener(MySubscribeCallback())
-pubnub.subscribe().channels('awesomeChannel').execute()
+pubnub.subscribe().channels('hello_world').execute()
