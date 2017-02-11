@@ -13,6 +13,7 @@ import sys
 class Chat(QDialog):
     def __init__(self):
         #pubnub
+        super(Chat, self).__init__()
         self.pnconfig = PNConfiguration()
         self.pnconfig.subscribe_key = "sub-c-d785fd74-f08e-11e6-9283-02ee2ddab7fe"
         self.pnconfig.publish_key = "pub-c-afbd56e9-6341-4a07-b493-cbb3ebf25284"
@@ -26,7 +27,7 @@ class Chat(QDialog):
         self.pubnub.subscribe().channels('main_eh').execute()
         print('connected')
         
-        super(Chat, self).__init__()
+        
         
         self.setWindowTitle("Chat")
         self.desc = 'Chat Program\n'
@@ -60,8 +61,8 @@ class Chat(QDialog):
     def checkForMessage(self, message):
         self.newMessageAll = message[1] + " " + message[0] + ": " + message[2] + "\n"
         self.text = self.prev_text.toPlainText()
-        self.textNew = self.text + self.newMessageAll
-        self.prev_text.setPlainText(self.textNew)
+        self.textNew = str(self.text + self.newMessageAll)
+        self.prev_text.setText(QString(self.textNew))
         
 
 
