@@ -91,6 +91,27 @@ class Chat(QDialog):
 
         self.curr_text.setText("")
 
+class MainWindow(QMainWindow):
+    def __init__(self):
+        super(MainWindow, self).__init__()
+        self.show()
+        self.chooseChannel()
+
+    def chooseChannel(self):
+        self.mainLayout = QHBoxLayout()
+
+        self.channel1 = QRadioButton("Channel 1")
+        self.channel2 = QRadioButton("Channel 2")
+        self.channel3 = QRadioButton("Channel 3")
+
+        self.channelGroup = QButtonGroup()
+        self.channelGroup.setExclusive(True)
+        for b in [self.channel1, self.channel2, self.channel3]:
+            self.channelGroup.addButton(b)
+            self.mainLayout.addWidget(b)
+
+        self.setLayout(self.mainLayout)
+
 
 class WebPluginFactory(QWebPluginFactory):
 
@@ -99,7 +120,7 @@ class WebPluginFactory(QWebPluginFactory):
     
     def create(self, mimeType, url, names, values):
         if mimeType == "x-pyqt/widget":
-            return Chat()
+            return MainWindow()
     
     def plugins(self):
         plugin = QWebPluginFactory.Plugin()
@@ -112,6 +133,7 @@ class WebPluginFactory(QWebPluginFactory):
         plugin.mimeTypes = [mimeType]
         print("plugins")
         return [plugin]
+    
 def publish_callback(result, status):
     pass
 
