@@ -4,6 +4,7 @@ from pubnub.enums import PNStatusCategory
 from pubnub.pnconfiguration import PNConfiguration
 from pubnub.pubnub import PubNub, SubscribeListener
 from datetime import datetime
+import threading
 import sys
 
 #from pntest import console_enter
@@ -40,6 +41,21 @@ class Chat(QDialog):
         
         self.setLayout(self.console_form)
         self.show()
+        t = threading.Thread(target=self.checkformessage)
+        t.daemon = True
+        t.start()
+    
+    def checkForMessage(self):
+        while True:
+            result = my_listener.wait_for_message_on('main_eh')
+            message = result.message
+            self.newMessageAll = message[1] + " " + message[0] + ": " + message[2] + "\n"
+            self.text = self.prev_text.toPlainText()
+            self.textNew = self.text + self.newMessageAll
+
+            self.prev_text.setText(self.textNew)
+
+
 
     def console_enter(self):
         
@@ -55,15 +71,10 @@ class Chat(QDialog):
 
         self.curr_text.setText("")
 
-        result = my_listener.wait_for_message_on('main_eh')
+        
         self.hear_message(result.message)
 
     def hear_message(self, message):
-        self.newMessageAll = message[1] + " " + message[0] + ": " + message[2] + "\n"
-        self.text = self.prev_text.toPlainText()
-        self.textNew = self.text + self.newMessageAll
-
-        self.prev_text.setText(self.textNew)
 
 
 
@@ -87,7 +98,8 @@ if __name__ == '__main__':
 
     pubnub.subscribe().channels('main_eh').execute()
 
-    
+
+
     #Main Program
     app = QApplication(sys.argv)
     main = Chat()
