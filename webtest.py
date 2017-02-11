@@ -13,13 +13,13 @@ import sys
 html = \
 """<html>
 <head>
-<title>Python Web Plugin Test</title>
+<title>CHAT</title>
 </head>
 
 <body>
-<h1>Python Web Plugin Test</h1>
+<h1>CHAT</h1>
 <object type="x-pyqt/widget" width="200" height="200"></object>
-<p>This is a Web plugin written in Python.</p>
+<p>Easy Feedback Chat</p>
 </body>
 </html>
 """
@@ -38,7 +38,7 @@ class Chat(QDialog):
         my_listener = MySubscribeCallback(self)
         self.pubnub.add_listener(my_listener)
 
-        self.pubnub.subscribe().channels('main_eh').execute()
+        self.pubnub.subscribe().channels(CHANNEL_CONSTANT).execute()
         print('connected')
         
         
@@ -86,7 +86,7 @@ class Chat(QDialog):
 
         #self.prev_text.setText(self.prev_text.toPlainText() + '\n' + self.message)
         
-        self.pubnub.publish().channel('main_eh').message([self.username,self.time,self.message])\
+        self.pubnub.publish().channel(CHANNEL_CONSTANT).message([self.username,self.time,self.message])\
             .should_store(True).use_post(True).async(publish_callback)
 
         self.curr_text.setText("")

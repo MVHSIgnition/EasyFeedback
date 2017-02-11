@@ -14,6 +14,7 @@ class Chat(QDialog):
     def __init__(self):
         #pubnub
         super(Chat, self).__init__()
+        self.currentChannel = "main_eh"
         self.pnconfig = PNConfiguration()
         self.pnconfig.subscribe_key = "sub-c-d785fd74-f08e-11e6-9283-02ee2ddab7fe"
         self.pnconfig.publish_key = "pub-c-afbd56e9-6341-4a07-b493-cbb3ebf25284"
@@ -24,13 +25,23 @@ class Chat(QDialog):
         my_listener = MySubscribeCallback(self)
         self.pubnub.add_listener(my_listener)
 
-        self.pubnub.subscribe().channels('main_eh').execute()
+        self.pubnub.subscribe().channels(self.currentChannel).execute()
         print('connected')
         
         
         
         self.setWindowTitle("Chat")
         self.desc = 'Chat Program\n'
+
+    
+        self.channelLabel = QLabel("Change Channel")
+        self.channelText = QLineEdit("main_eh")
+        self.channelButton = QPushButton("Go")
+        self.channelButton.clicked.connect(self.changeChannel)
+        self.channelLayout = QHBoxLayout()
+        self.channelLayout.addWidget(self.channelLabel)
+        self.channelLayout.addWidget(self.channelText)
+        self.channelLayout.addWidget(self.channelButton)
 
         self.usernameLabel = QLabel('Username')
         self.usernameEdit = QLineEdit()
@@ -51,17 +62,30 @@ class Chat(QDialog):
         self.curr_text_layout.addWidget(self.curr_text_btn)
         
         self.console_form = QFormLayout()
+        self.console_form.addRow(self.channelLayout)
         self.console_form.addRow(self.usernameLayout)
         self.console_form.addRow(self.prev_text)
         self.console_form.addRow(self.curr_text_layout)
+    
         
         self.setLayout(self.console_form)
         self.show()
+    def changeChannel(self):
+        self.newChannel = str(self.channelText.text())
+        self.pubnub.publish().channel(self.currentChannel).message([1,self.username,self.newChannel,self.currentChannel]).should_store(True).use_post(True).async(publish_callback)
+        self.pubnub.unsubscribe().channels(self.currentChannel).execute()
+        self.pubnub.subscribe().channels(self.newChannel).execute()
+        self.pubnub.publish().channel(self.newChannel).message([1,self.username,self.newChannel,self.currentChannel]).should_store(True).use_post(True).async(publish_callback)
+        
+        self.currentChannel = self.newChannel
     
     def checkForMessage(self, message):
-        self.newMessageAll = message[1] + " " + message[0] + ": " + message[2]
-        self.text = self.prev_text.toPlainText()
-        self.prev_text.append(self.newMessageAll)
+        if message[0] == 0:
+            self.newMessageAll = message[2] + " " + message[1] + ": " + message[3]
+            self.text = self.prev_text.toPlainText()
+            self.prev_text.append(self.newMessageAll)
+        elif message[0] == 1:
+            self.prev_text.append(message[1] + " has moved from " + message[3] + " to " +message[2]+".")
         
     def console_enter(self):
         
@@ -72,7 +96,7 @@ class Chat(QDialog):
 
         #self.prev_text.setText(self.prev_text.toPlainText() + '\n' + self.message)
         
-        self.pubnub.publish().channel('main_eh').message([self.username,self.time,self.message])\
+        self.pubnub.publish().channel(self.currentChannel).message([0,self.username,self.time,self.message])\
             .should_store(True).use_post(True).async(publish_callback)
 
         self.curr_text.setText("")
