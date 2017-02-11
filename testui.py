@@ -61,12 +61,8 @@ class Chat(QDialog):
     def checkForMessage(self, message):
         self.newMessageAll = message[1] + " " + message[0] + ": " + message[2] + "\n"
         self.text = self.prev_text.toPlainText()
-        self.textNew = str(self.text + self.newMessageAll)
-        self.prev_text.setText(QString(self.textNew))
+        self.prev_text.append(self.newMessageAll)
         
-
-
-
     def console_enter(self):
         
         self.text = self.curr_text.displayText()
