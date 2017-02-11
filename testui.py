@@ -3,6 +3,7 @@ from PySide.QtGui import *
 from pubnub.enums import PNStatusCategory
 from pubnub.pnconfiguration import PNConfiguration
 from pubnub.pubnub import PubNub, SubscribeListener
+from pubnub.callbacks import SubscribeCallback
 from datetime import datetime
 import threading
 import sys
@@ -11,6 +12,20 @@ import sys
 
 class Chat(QDialog):
     def __init__(self):
+        #pubnub
+        self.pnconfig = PNConfiguration()
+        self.pnconfig.subscribe_key = "sub-c-d785fd74-f08e-11e6-9283-02ee2ddab7fe"
+        self.pnconfig.publish_key = "pub-c-afbd56e9-6341-4a07-b493-cbb3ebf25284"
+        self.pnconfig.ssl = False
+         
+        self.pubnub = PubNub(self.pnconfig)
+
+        my_listener = MySubscribeCallback(self)
+        self.pubnub.add_listener(my_listener)
+
+        self.pubnub.subscribe().channels('main_eh').execute()
+        print('connected')
+        
         super(Chat, self).__init__()
         
         self.setWindowTitle("Chat")
@@ -41,19 +56,13 @@ class Chat(QDialog):
         
         self.setLayout(self.console_form)
         self.show()
-        t = threading.Thread(target=self.checkformessage)
-        t.daemon = True
-        t.start()
     
-    def checkForMessage(self):
-        while True:
-            result = my_listener.wait_for_message_on('main_eh')
-            message = result.message
-            self.newMessageAll = message[1] + " " + message[0] + ": " + message[2] + "\n"
-            self.text = self.prev_text.toPlainText()
-            self.textNew = self.text + self.newMessageAll
-
-            self.prev_text.setText(self.textNew)
+    def checkForMessage(self, message):
+        self.newMessageAll = message[1] + " " + message[0] + ": " + message[2] + "\n"
+        self.text = self.prev_text.toPlainText()
+        self.textNew = self.text + self.newMessageAll
+        self.prev_text.setPlainText(self.textNew)
+        
 
 
 
@@ -66,13 +75,13 @@ class Chat(QDialog):
 
         #self.prev_text.setText(self.prev_text.toPlainText() + '\n' + self.message)
         
-        pubnub.publish().channel('main_eh').message([self.username,self.time,self.message])\
+        self.pubnub.publish().channel('main_eh').message([self.username,self.time,self.message])\
             .should_store(True).use_post(True).async(publish_callback)
 
         self.curr_text.setText("")
 
-        
-        self.hear_message(result.message)
+##        
+##        self.hear_message(result.message)
 
 ##    def hear_message(self, message):
 
@@ -81,22 +90,21 @@ class Chat(QDialog):
 def publish_callback(result, status):
     pass
 
-
+class MySubscribeCallback(SubscribeCallback):
+    def __init__(self, parent):
+        self.parent = parent
+    
+    def presence(self, pubnub, presence):
+        pass  # handle incoming presence data
+ 
+    def status(self, pubnub, status):
+        pass
+ 
+    def message(self, pubnub, message):
+        self.parent.checkForMessage(message.message)
+        
         
 if __name__ == '__main__':
-
-    #pubnub
-    pnconfig = PNConfiguration()
-    pnconfig.subscribe_key = "sub-c-d785fd74-f08e-11e6-9283-02ee2ddab7fe"
-    pnconfig.publish_key = "pub-c-afbd56e9-6341-4a07-b493-cbb3ebf25284"
-    pnconfig.ssl = False
-     
-    pubnub = PubNub(pnconfig)
-
-    my_listener = SubscribeListener()
-    pubnub.add_listener(my_listener)
-
-    pubnub.subscribe().channels('main_eh').execute()
 
 
 
