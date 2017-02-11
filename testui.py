@@ -48,7 +48,7 @@ class Chat(QDialog):
         self.username = str(self.usernameEdit.text())
         self.message  = str(self.curr_text.text())
 
-        self.prev_text.setText(self.prev_text.toPlainText() + '\n' + self.message)
+        #self.prev_text.setText(self.prev_text.toPlainText() + '\n' + self.message)
         
         pubnub.publish().channel('main_eh').message([self.username,self.time,self.message])\
             .should_store(True).use_post(True).async(publish_callback)
@@ -60,7 +60,7 @@ class Chat(QDialog):
 
     def hear_message(self, message):
         self.newMessageAll = message[1] + " " + message[0] + ": " + message[2] + "\n"
-        self.text = self.curr_text.displayText()
+        self.text = self.prev_text.toPlainText()
         self.textNew = self.text + self.newMessageAll
 
         self.prev_text.setText(self.textNew)
