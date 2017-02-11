@@ -74,7 +74,7 @@ class Chat(QDialog):
         
         self.hear_message(result.message)
 
-    def hear_message(self, message):
+##    def hear_message(self, message):
 
 
 
