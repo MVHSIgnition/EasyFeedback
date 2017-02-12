@@ -47,16 +47,16 @@
 
       <div class="jumbotron">
 			<h1 id="question">Awaiting Question...</h1>
-			<input id="O1" class="btn btn-info" style="visibility:hidden;" type="button" onclick="publishAnswer(1)"></input>
-			<input id="O2" class="btn btn-info" style="visibility:hidden;" type="button" onclick="publishAnswer(2)"></input>
-			<input id="O3" class="btn btn-info" style="visibility:hidden;" type="button" onclick="publishAnswer(3)"></input>
-			<input id="O4" class="btn btn-info" style="visibility:hidden;" type="button" onclick="publishAnswer(4)"></input>
+			<input id="O1" class="btn btn-info" style="visibility:hidden;" type="button" onclick="publishAnswer(0)"></input>
+			<input id="O2" class="btn btn-info" style="visibility:hidden;" type="button" onclick="publishAnswer(1)"></input>
+			<input id="O3" class="btn btn-info" style="visibility:hidden;" type="button" onclick="publishAnswer(2)"></input>
+			<input id="O4" class="btn btn-info" style="visibility:hidden;" type="button" onclick="publishAnswer(3)"></input>
 	  </div>
-    <div class = "jumbotron">
+    <div class = "emoji">
       <h1 id = "feedback">How do you feel about this lecture?</h1>
-      <input class = "btn btn-default" type = "image"src = "http://pix.iemoji.com/images/emoji/apple/ios-9/256/sleeping-face.png" ></input>
-      <input class = "btn btn-default"type = "image"src = "http://pix.iemoji.com/images/emoji/apple/ios-9/256/disappointed-face.png" ></input>
-      <input class = "btn btn-default"type = "image"src = "http://pix.iemoji.com/images/emoji/apple/ios-9/256/grinning-face.png" ></input>
+      <input style="height:100px;width:100px" type = "image"src = "http://pix.iemoji.com/images/emoji/apple/ios-9/256/sleeping-face.png" ></input>
+      <input style="height:100ppx;width:100px" type = "image"src = "http://pix.iemoji.com/images/emoji/apple/ios-9/256/disappointed-face.png" ></input>
+      <input style="height:100px;width:100px" type = "image"src = "http://pix.iemoji.com/images/emoji/apple/ios-9/256/grinning-face.png" ></input>
     </div>
 
 		<script src=http://cdn.pubnub.com/pubnub.min.js></script>
@@ -91,7 +91,6 @@
 					}
 				});
 				function publishAnswer(num) {
-					console.log(num);
 					if (num != "") {
 						pubnub.publish({
 							channel: o_channel, message : [1, num]
