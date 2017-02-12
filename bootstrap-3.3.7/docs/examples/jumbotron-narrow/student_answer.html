@@ -47,10 +47,10 @@
 
       <div class="jumbotron">
 			<h1 id="question">Awaiting Question...</h1>
-			<input id="O1" class="btn btn-info" style="visibility:hidden;" type="button" onclick="publishAnswer(0)"></input>
-			<input id="O2" class="btn btn-info" style="visibility:hidden;" type="button" onclick="publishAnswer(1)"></input>
-			<input id="O3" class="btn btn-info" style="visibility:hidden;" type="button" onclick="publishAnswer(2)"></input>
-			<input id="O4" class="btn btn-info" style="visibility:hidden;" type="button" onclick="publishAnswer(3)"></input>
+			<input id="O1" class="btn btn-info" style="visibility:hidden;" type="button" onclick="publishAnswer(1)"></input>
+			<input id="O2" class="btn btn-info" style="visibility:hidden;" type="button" onclick="publishAnswer(2)"></input>
+			<input id="O3" class="btn btn-info" style="visibility:hidden;" type="button" onclick="publishAnswer(3)"></input>
+			<input id="O4" class="btn btn-info" style="visibility:hidden;" type="button" onclick="publishAnswer(4)"></input>
 	  </div>
     <div class = "jumbotron">
       <h1 id = "feedback">How do you feel about this lecture?</h1>
@@ -91,6 +91,7 @@
 					}
 				});
 				function publishAnswer(num) {
+					console.log(num);
 					if (num != "") {
 						pubnub.publish({
 							channel: o_channel, message : [1, num]
