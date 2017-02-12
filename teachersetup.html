@@ -47,22 +47,21 @@
 
       <div class="jumbotron">
         <h1>Make Questions Here</h1>
-        <form action="action.php" method = "get">
+        <form id="file-form">
           Question:<br>
-          <input type="text" name="Question" value=""><br>
+          <input type="text" name="Question" id = "question" placeholder = "Question 1"><br>
           Option 1:<br>
-          <input type="text" name="Option 1" value=""><br>
+          <input type="text" name="Option 1" id = "option1" placeholder = "Option 1"><br>
           Option 2:<br>
-          <input type="text" name="Option 2" value=""><br>
+          <input type="text" name="Option 2" id = "option2" placeholder = "Option 2"><br>
           Option 3:<br>
-          <input type="text" name="Option 3" value=""><br>
+          <input type="text" name="Option 3" id = "option3" placeholder = "Option 3"><br>
           Option 4:<br>
-          <input type="text" name="Option 4" value=""><br><br>
-          <input type="submit" value="Submit">
-        </form>
+          <input type="text" name="Option 4" id = "option4" placeholder = "Option 4"><br><br>
+          <input id="submit" type="button" value="submit" onclick="doFunction();" />
+        <div id="messages"></div>
+      </form>
       </div>
-
-
 
       <footer class="footer">
         <p>&copy; 2016 Company, Inc.</p>
