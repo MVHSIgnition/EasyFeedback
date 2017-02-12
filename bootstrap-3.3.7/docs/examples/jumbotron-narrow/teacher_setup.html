@@ -36,12 +36,12 @@
       <div class="header clearfix">
         <nav>
         </nav>
-        <h3 class="text-muted">EZfeedback</h3>
+        <h3 class="text-muted"><input style="height:100px;width:100px" type = "image" src = "logo.png" onclick = "location.href = 'index.html';"></input></h3>
       </div>
 
       <!--<div class="jumbotron">-->
         <h1 style="align:center">Make Questions Here</h1>
-		
+
 		<p id="info"></p>
         <form id="file-form">
 			<div class="form-group">
@@ -86,7 +86,7 @@
 					channel  : [c_channel,o_channel],
 					callback : function(text) {}
 				});
-				
+
 		function createQuestion() {
 			if (question.value.replace(/ /g,'') != "" && O1.value.replace(/ /g,'') != "" && O2.value.replace(/ /g,'') != "") {
 				pubnub.publish({
@@ -97,7 +97,7 @@
 				O2.value = "";
 				O3.value = "";
 				O4.value = "";
-				
+
 				console.log("Question successfully stored.");
 				info.innerHTML = "Question successfully created!";
 				info.style.color = "green";
@@ -113,6 +113,6 @@
 			window.location.href = "teacher_main.html";
 		}
 	</script>
-	
+
   </body>
 </html>

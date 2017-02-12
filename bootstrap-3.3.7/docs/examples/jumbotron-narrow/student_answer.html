@@ -12,10 +12,10 @@
     <title>EZFeedback</title>
 
     <!-- Bootstrap core CSS -->
-    <link href="bootstrap.min.css" rel="stylesheet">
+    <link href="../../dist/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-    <!--<link href="../../assets/css/ie10-viewport-bug-workaround.css" rel="stylesheet">-->
+    <link href="../../assets/css/ie10-viewport-bug-workaround.css" rel="stylesheet">
 
     <!-- Custom styles for this template -->
     <link href="jumbotron-narrow.css" rel="stylesheet">
@@ -41,7 +41,7 @@
           <ul class="nav nav-pills pull-right">
           </ul>
         </nav>
-        <h3 class="text-muted">EZfeedback</h3>
+        <h3 class="text-muted"><input style="height:100px;width:100px" type = "image" src = "logo.png" onclick = "location.href = 'index.html';"></input></h3>
       </div>
 	</div>
 
@@ -52,10 +52,15 @@
 			<input id="O3" class="btn btn-info" style="visibility:hidden;" type="button" onclick="publishAnswer(2)"></input>
 			<input id="O4" class="btn btn-info" style="visibility:hidden;" type="button" onclick="publishAnswer(3)"></input>
 	  </div>
+    <div class = "emoji">
+      <h1 id = "feedback">How do you feel about this lecture?</h1>
+      <input style="height:100px;width:100px" type = "image" onclick = "publishFeedback(0)"src = "http://pix.iemoji.com/images/emoji/apple/ios-9/256/sleeping-face.png" ></input>
+      <input style="height:100ppx;width:100px" type = "image"onclick = "publishFeedback(1)"src = "http://pix.iemoji.com/images/emoji/apple/ios-9/256/disappointed-face.png" ></input>
+      <input style="height:100px;width:100px" type = "image"onclick = "publishFeedback(2)"src = "http://pix.iemoji.com/images/emoji/apple/ios-9/256/grinning-face.png" ></input>
+    </div>
 
 		<script src=http://cdn.pubnub.com/pubnub.min.js></script>
 			<script>
-
 				var pubnub = PUBNUB.init({publish_key:'pub-c-afbd56e9-6341-4a07-b493-cbb3ebf25284',subscribe_key:'sub-c-d785fd74-f08e-11e6-9283-02ee2ddab7fe',ssl:true});
 				var c_channel = 's_handler', o_channel = 't_handler';
 				var question = PUBNUB.$("question");
@@ -70,11 +75,11 @@
 							O2.style.visibility = "visible";
 							O2.setAttribute("value", text[2][1]);
 							if (text[2][2] != "") {
-								O3.style.visibility = "visible"; 
+								O3.style.visibility = "visible";
 								O3.setAttribute("value", text[2][2]);
 							}
 							if (text[2][3] != "") {
-								O4.style.visibility = "visible"; 
+								O4.style.visibility = "visible";
 								O4.setAttribute("value", text[2][3]);
 							}
 							console.log(text);
@@ -85,7 +90,6 @@
 						}
 					}
 				});
-
 				function publishAnswer(num) {
 					if (num != "") {
 						pubnub.publish({
@@ -93,12 +97,19 @@
 						});
 					}
 					question.innerHTML = "Awaiting Next Question..."
-					O1.style.visibility = "hidden"; 
-					O2.style.visibility = "hidden"; 
-					O3.style.visibility = "hidden"; 
-					O4.style.visibility = "hidden"; 
+					O1.style.visibility = "hidden";
+					O2.style.visibility = "hidden";
+					O3.style.visibility = "hidden";
+					O4.style.visibility = "hidden";
 				}
-
+        function publishFeedback(num)
+        {
+          if(num!=""){
+            pubnub.publish({
+              channel:o_channel, message : [6, num]
+            });
+          }
+        }
 			</script>
 
 	</body>
