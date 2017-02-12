@@ -116,7 +116,6 @@ function startPoll(){
 	b.style.visibility = "visible";
 	c.style.visibility = "visible";
 	d.style.visibility = "visible";*/
-<<<<<<< HEAD
 	all.css("visibility:visible;")
 	button.css("visibility:hidden;")
 	button2.css("visibility:visible;")
@@ -130,18 +129,6 @@ function startPoll(){
 		if(message[0] === 1){
 				console.log(message);
 				if(message[1] === 1){
-=======
-	all.style.visibility = "visible"
-	button.style.visibility = "hidden";
-	button2.style.visibility = "visible";
-	var channels = ['t_handler','s_handler'];
-	pubnub.subscribe({
-		channel  : channels,
-		callback : function(message) {
-			if(message[0] === 1){
-				var total = anum+bnum+cnum+dnum;
-				if(message[1] === 0){
->>>>>>> origin/master
 					anum += 1;
 					a.innerHTML = "A: "+anum;
 					console.log(anum);
@@ -165,7 +152,6 @@ function startPoll(){
 					console.log(dnum);
 					
 				}
-<<<<<<< HEAD
 				total = anum+bnum+cnum+dnum;
 				DP.innerHTML = Math.round(dnum/total) * 100 + "%";
 				dBar.style.width = Math.round(dnum/total) * 100 + "%";
@@ -177,9 +163,7 @@ function startPoll(){
 				AP.innerHTML = Math.round(anum/total) * 100 + "%";
 				aBar.style.width = Math.round(anum/total) * 100 + "%";
 				
-=======
 
->>>>>>> origin/master
 			}
 			else if(message[0] === 0){
 				console.log(message);
