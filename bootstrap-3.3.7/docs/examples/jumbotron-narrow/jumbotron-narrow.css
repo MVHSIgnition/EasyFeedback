@@ -46,6 +46,12 @@ body {
   background-color: #ffffff;
 }
 
+.emoji{
+  background-color:#ffffff;
+  text-align: center;
+
+}
+
 /* Main marketing message and sign up button */
 .jumbotron {
   text-align: center;

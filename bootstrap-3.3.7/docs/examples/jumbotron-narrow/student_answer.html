@@ -52,7 +52,7 @@
 			<input id="O3" class="btn btn-info" style="visibility:hidden;" type="button" onclick="publishAnswer(3)"></input>
 			<input id="O4" class="btn btn-info" style="visibility:hidden;" type="button" onclick="publishAnswer(4)"></input>
 	  </div>
-    <div class = "jumbotron">
+    <div class = "emoji">
       <h1 id = "feedback">How do you feel about this lecture?</h1>
       <input class = "btn btn-default" type = "image"src = "http://pix.iemoji.com/images/emoji/apple/ios-9/256/sleeping-face.png" onclick="publishFeedback(0)"></input>
       <input class = "btn btn-default"type = "image"src = "http://pix.iemoji.com/images/emoji/apple/ios-9/256/disappointed-face.png" onclick="publishFeedback(1)"></input>
@@ -91,7 +91,6 @@
 					}
 				});
 				function publishAnswer(num) {
-					console.log(num);
 					if (num != "") {
 						pubnub.publish({
 							channel: o_channel, message : [1, num]
