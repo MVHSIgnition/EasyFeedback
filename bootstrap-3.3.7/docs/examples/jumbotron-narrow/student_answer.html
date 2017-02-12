@@ -41,7 +41,7 @@
           <ul class="nav nav-pills pull-right">
           </ul>
         </nav>
-        <h3 class="text-muted">EZfeedback</h3>
+        <h3 class="text-muted"><input style="height:100px;width:150px" type = "image" src = "logo.png" onclick = "location.href = 'index.html';"></input></h3>
       </div>
 	</div>
 
@@ -54,9 +54,11 @@
 	  </div>
 <div class = "emoji">
       <h1 id = "feedback">How do you feel about this lecture?</h1>
+
       <input style="height:100px;width:100px" type="image" onclick = "publishFeedback(1)"src = "http://pix.iemoji.com/images/emoji/apple/ios-9/256/sleeping-face.png" ></input>
       <input style="height:100ppx;width:100px" type = "image" onclick = "publishFeedback(2)"src = "http://pix.iemoji.com/images/emoji/apple/ios-9/256/disappointed-face.png" ></input>
       <input style="height:100px;width:100px" type = "image" onclick = "publishFeedback(3)"src = "http://pix.iemoji.com/images/emoji/apple/ios-9/256/grinning-face.png" ></input>
+
     </div>
 
 		<script src=http://cdn.pubnub.com/pubnub.min.js></script>
@@ -102,14 +104,14 @@
 					O3.style.visibility = "hidden";
 					O4.style.visibility = "hidden";
 				}
-				function publishFeedback(num)
-				{
-				  if(num!=""){
-					pubnub.publish({
-					  channel:o_channel, message : [6, num]
-					});
-				  }
-				}
+        function publishFeedback(num)
+        {
+          if(num!=""){
+            pubnub.publish({
+              channel:o_channel, message : [6, num]
+            });
+          }
+        }
 			</script>
 
 	</body>
