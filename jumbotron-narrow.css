@@ -2,7 +2,10 @@
 body {
   padding-top: 20px;
   padding-bottom: 20px;
+  @font-family: "Herculanum", Herculanum;
+
 }
+
 
 /* Everything but the jumbotron gets side spacing for mobile first views */
 .header,
@@ -49,19 +52,20 @@ body {
   border-bottom: 5px solid #ffffff;
   background-color: #ffffff;
 }
-.jumbotron .btn {
-  margin-top:20px;
+.jumbotron .btn-lg {
+  margin-top: 20px;
   font-size: 21px;
-  }
+  margin-right: 10px;
+  background-color: #1b1e29;
+}
+.jumbotron .btn-lg:last-child{
+  margin-top: 60px;
+  font-size: 21px;
+  margin-left: 80px;
+  background-color: #1b1e29;
+}
 }
 
-/* Supporting marketing content */
-.marketing {
-  margin: 40px 0;
-}
-.marketing p + h4 {
-  margin-top: 28px;
-}
 
 /* Responsive: Portrait tablets and up */
 @media screen and (min-width: 768px) {
