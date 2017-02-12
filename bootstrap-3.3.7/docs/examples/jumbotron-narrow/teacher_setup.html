@@ -66,7 +66,7 @@
 			</div>
 			<br>
           <input id="submit" class="btn btn-primary" type="button" value="Submit" onclick="createQuestion();" />
-		  <input id="next" class="btn" type="button" value="Next Step" style="visibility:hidden;" onclick="location.href = 'teacher_main.html';" />
+		  <input id="next" class="btn" type="button" value="Next Step" style="visibility:hidden;" onclick="nextPage()" />
         <div id="messages"></div>
       </form>
       <!--</div>-->
@@ -104,8 +104,13 @@
 				next.style.visibility = "visible";
 			} else {
 				info.innerHTML = "Please fill in all the required (*) fields:";
-				info.style.color = "red";
+				info.style.color = "red"
 			}
+		}
+		
+		function nextPage() {
+			pubnub.unsubscribe({channel: [c_channel,o_channel]});
+			window.location.href = "teacher_main.html";
 		}
 	</script>
 	
