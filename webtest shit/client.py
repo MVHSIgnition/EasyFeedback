@@ -79,6 +79,7 @@ pubnub.subscribe().channels([currentChannel,outputChannel]).execute()
 question = "how many moons are in asshole!>?"
 cur_question = question
 answers = ["1","2","3","hey pei pei"]
+print(cur_question+"\na: "+str(a)+"\nb: "+str(b)+"\nc: "+str(c)+"\nd: "+str(d))
 pubnub.publish().channel(outputChannel).message([True,question,answers])\
     .should_store(True).use_post(True).async(publish_callback)
 
