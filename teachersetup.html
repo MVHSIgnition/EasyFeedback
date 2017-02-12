@@ -1,6 +1,7 @@
+<<<<<<< HEAD
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+ <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -9,30 +10,50 @@
     <meta name="author" content="">
     <link rel="icon" href="../../favicon.ico">
 
-    <title>Narrow Jumbotron Template for Bootstrap</title>
+    <title>EZFeedback</title>
 
     <!-- Bootstrap core CSS -->
-    <link href="../../dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="bootstrap.min.css" rel="stylesheet">
+=======
+  <!DOCTYPE html>
+  <html lang="en">
+    <head>
+      <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+      <meta name="description" content="">
+      <meta name="author" content="">
+      <link rel="icon" href="../../favicon.ico">
 
-    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-    <link href="../../assets/css/ie10-viewport-bug-workaround.css" rel="stylesheet">
+      <title>Teacher Setup</title>
 
-    <!-- Custom styles for this template -->
-    <link href="jumbotron-narrow.css" rel="stylesheet">
+      <!-- Bootstrap core CSS -->
+      <link href="../../dist/css/bootstrap.min.css" rel="stylesheet">
+>>>>>>> origin/master
 
-    <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
-    <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
-    <script src="../../assets/js/ie-emulation-modes-warning.js"></script>
+      <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+      <link href="../../assets/css/ie10-viewport-bug-workaround.css" rel="stylesheet">
 
-    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-    <!--[if lt IE 9]>
-      <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-    <![endif]-->
-  </head>
+      <!-- Custom styles for this template -->
+      <link href="jumbotron-narrow.css" rel="stylesheet">
 
-  <body>
+      <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
+      <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+      <script src="../../assets/js/ie-emulation-modes-warning.js"></script>
 
+      <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+      <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+      <![endif]-->
+    </head>
+
+    <body>
+
+<<<<<<< HEAD
+
+  
     <div class="container">
       <div class="header clearfix">
         <nav>
@@ -46,6 +67,7 @@
       </div>
 
       <div class="jumbotron">
+	    	
         <h1>Make Questions Here</h1>
         <form id="file-form">
           Question:<br>
@@ -58,19 +80,112 @@
           <input type="text" name="Option 3" id = "option3" placeholder = "Option 3"><br>
           Option 4:<br>
           <input type="text" name="Option 4" id = "option4" placeholder = "Option 4"><br><br>
-          <input id="submit" type="button" value="submit" onclick="doFunction();" />
+          <input id="submit" type="button" value="submit" onclick="doFunction(); xd(); publish();" />
         <div id="messages"></div>
       </form>
       </div>
+=======
+      <div class="container">
+        <div class="header clearfix">
+          <nav>
+            <ul class="nav nav-pills pull-right">
+            </ul>
+          </nav>
+          <h3 class="text-muted">EZfeedback</h3>
+        </div>
 
+        <div class="jumbotron">
+          <h1>Make Questions Here</h1>
+          <form id="file-form">
+            Question:<br>
+            <input type="text" name="Question" id = "question" placeholder = "Question 1"><br>
+            Option 1:<br>
+            <input type="text" name="Option 1" id = "option1" placeholder = "Option 1"><br>
+            Option 2:<br>
+            <input type="text" name="Option 2" id = "option2" placeholder = "Option 2"><br>
+            Option 3:<br>
+            <input type="text" name="Option 3" id = "option3" placeholder = "Option 3"><br>
+            Option 4:<br>
+            <input type="text" name="Option 4" id = "option4" placeholder = "Option 4"><br><br>
+            <input id="submit" type="button" value="submit" onclick="doFunction();" />
+          <div id="messages"></div>
+        </form>
+        </div>
+>>>>>>> origin/master
+
+<<<<<<< HEAD
       <footer class="footer">
         <p>&copy; 2017 Bald Engineers, Inc.</p>
       </footer>
+=======
+        <footer class="footer">
+          <p>&copy; 2016 Company, Inc.</p>
+        </footer>
+>>>>>>> origin/master
 
-    </div> <!-- /container -->
+      </div> <!-- /container -->
 
 
+<<<<<<< HEAD
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <script src="../../assets/js/ie10-viewport-bug-workaround.js"></script>
+	<!-- OUR FUNCTIONS-->
+			<script>
+				function xd() {
+					console.log('works');
+				}
+			</script>
+			<script src="reader.js"></script>
+			<script src="publish.js"></script>
+			<script src="https://cdn.pubnub.com/sdk/javascript/pubnub.4.4.3.js"></script>
+			
+			
+			<script src="https://cdn.pubnub.com/sdk/javascript/pubnub.4.4.3.js">
+				
+				
+				
+				function publish() {
+   
+					pubnub = new PubNub({
+						publishKey : 'pub-c-afbd56e9-6341-4a07-b493-cbb3ebf25284',
+						subscribeKey : 'sub-c-d785fd74-f08e-11e6-9283-02ee2ddab7fe'
+					})
+					   
+					function publishSampleMessage() {
+						console.log("Since we're publishing on subscribe connectEvent, we're sure we'll receive the following publish.");
+						var publishConfig = {
+							channel : "hello_world",
+							message : "Hello from PubNub Docs!"
+						}
+						pubnub.publish(publishConfig, function(status, response) {
+							console.log(status, response);
+						})
+					}
+					   
+					pubnub.addListener({
+						status: function(statusEvent) {
+							if (statusEvent.category === "PNConnectedCategory") {
+								publishSampleMessage();
+							}
+						},
+						message: function(message) {
+							console.log("New Message!!", message);
+						},
+						presence: function(presenceEvent) {
+							// handle presence
+						}
+					})      
+					console.log("Subscribing..");
+					pubnub.subscribe({
+						channels: ['hello_world'] 
+					});
+				};
+			</script>
   </body>
 </html>
+=======
+      <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+      <script src="../../assets/js/ie10-viewport-bug-workaround.js"></script>
+    </body>
+  </html>
+>>>>>>> origin/master
