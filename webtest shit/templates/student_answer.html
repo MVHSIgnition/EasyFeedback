@@ -72,20 +72,30 @@
 							O1.setAttribute("value", text[2][0]);
 							O2.style.visibility = "visible"; 
 							O2.setAttribute("value", text[2][1]);
-							O3.style.visibility = "visible"; 
-							O3.setAttribute("value", text[2][2]);
-							O4.style.visibility = "visible"; 
-							O4.setAttribute("value", text[2][3]);
+							if (text[2][2] != "") {
+								O3.style.visibility = "visible"; 
+								O3.setAttribute("value", text[2][2]);
+							}
+							if (text[2][3] != "") {
+								O4.style.visibility = "visible"; 
+								O4.setAttribute("value", text[2][3]);
+							}
 							console.log(text);
 							console.log(text[2])
-							}
+						} else if (text[0] == 5) {
+							console.log("Polling stopped.");
+							publishAnswer("");
+						}
 					}
 				});
 				
 				function publishAnswer(num) {
-					pubnub.publish({
-						channel: o_channel, message : [1, num]
-					});
+					if (num != "") {
+						pubnub.publish({
+							channel: o_channel, message : [1, num]
+						});
+					}
+					question.innerHTML = "Awaiting Next Question..."
 					O1.style.visibility = "hidden"; 
 					O2.style.visibility = "hidden"; 
 					O3.style.visibility = "hidden"; 
