@@ -54,9 +54,9 @@
 	  </div>
     <div class = "jumbotron">
       <h1 id = "feedback">How do you feel about this lecture?</h1>
-      <input class = "btn btn-default" type = "image"src = "http://pix.iemoji.com/images/emoji/apple/ios-9/256/sleeping-face.png" ></input>
-      <input class = "btn btn-default"type = "image"src = "http://pix.iemoji.com/images/emoji/apple/ios-9/256/disappointed-face.png" ></input>
-      <input class = "btn btn-default"type = "image"src = "http://pix.iemoji.com/images/emoji/apple/ios-9/256/grinning-face.png" ></input>
+      <input class = "btn btn-default" type = "image"src = "http://pix.iemoji.com/images/emoji/apple/ios-9/256/sleeping-face.png" onclick="publishFeedback(0)"></input>
+      <input class = "btn btn-default"type = "image"src = "http://pix.iemoji.com/images/emoji/apple/ios-9/256/disappointed-face.png" onclick="publishFeedback(1)"></input>
+      <input class = "btn btn-default"type = "image"src = "http://pix.iemoji.com/images/emoji/apple/ios-9/256/grinning-face.png" onclick="publishFeedback(2)"></input>
     </div>
 
 		<script src=http://cdn.pubnub.com/pubnub.min.js></script>
@@ -102,6 +102,14 @@
 					O2.style.visibility = "hidden";
 					O3.style.visibility = "hidden";
 					O4.style.visibility = "hidden";
+				}
+				function publishFeedback(num)
+				{
+				  if(num!=""){
+					pubnub.publish({
+					  channel:o_channel, message : [6, num]
+					});
+				  }
 				}
 			</script>
 
