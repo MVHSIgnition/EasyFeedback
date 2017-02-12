@@ -7,7 +7,7 @@
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
     <meta name="description" content="">
     <meta name="author" content="">
-    <link rel="icon" href="../../favicon.ico">
+    <!--<link rel="icon" href="../../favicon.ico">-->
 
     <title>EZFeedback</title>
 
@@ -15,14 +15,14 @@
     <link href="bootstrap.min.css" rel="stylesheet">
 
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-    <link href="../../assets/css/ie10-viewport-bug-workaround.css" rel="stylesheet">
+    <!--<link href="../../assets/css/ie10-viewport-bug-workaround.css" rel="stylesheet">-->
 
     <!-- Custom styles for this template -->
     <link href="jumbotron-narrow.css" rel="stylesheet">
 
     <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
     <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
-    <script src="../../assets/js/ie-emulation-modes-warning.js"></script>
+    <!--<script src="../../assets/js/ie-emulation-modes-warning.js"></script>-->
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -50,13 +50,52 @@
 
       <div class="jumbotron">
 			<h1 id="question">Awaiting Question...</h1>
-			<input id="O1" class="btn btn-info" type="button" onclick=""></input>
-			<input id="O2" class="btn btn-info" type="button"></input>
-			<input id="O3" class="btn btn-info" type="button"></input>
-			<input id="O4" class="btn btn-info" type="button"></input>
+			<input id="O1" class="btn btn-info" style="visibility:hidden;" type="button" onclick="publishAnswer(0)"></input>
+			<input id="O2" class="btn btn-info" style="visibility:hidden;" type="button" onclick="publishAnswer(1)"></input>
+			<input id="O3" class="btn btn-info" style="visibility:hidden;" type="button" onclick="publishAnswer(2)"></input>
+			<input id="O4" class="btn btn-info" style="visibility:hidden;" type="button" onclick="publishAnswer(3)"></input>
 	  </div>
 	
+		<script src=http://cdn.pubnub.com/pubnub.min.js></script>
+			<script>
+				
+				var pubnub = PUBNUB.init({publish_key:'pub-c-afbd56e9-6341-4a07-b493-cbb3ebf25284',subscribe_key:'sub-c-d785fd74-f08e-11e6-9283-02ee2ddab7fe',ssl:true});
+				var c_channel = 's_handler', o_channel = 't_handler';
+				var question = PUBNUB.$("question");
+				var O1 = PUBNUB.$('O1'), O2 = PUBNUB.$('O2'), O3 = PUBNUB.$('O3'), O4 = PUBNUB.$('O4');
+				pubnub.subscribe({
+					channel  : [c_channel,o_channel],
+					callback : function(text) {
+						if (text[0] == 0) {
+							question.innerHTML = text[1];
+							O1.style.visibility = "visible"; 
+							O1.setAttribute("value", text[2][0]);
+							O2.style.visibility = "visible"; 
+							O2.setAttribute("value", text[2][1]);
+							O3.style.visibility = "visible"; 
+							O3.setAttribute("value", text[2][2]);
+							O4.style.visibility = "visible"; 
+							O4.setAttribute("value", text[2][3]);
+							console.log(text);
+							console.log(text[2])
+							}
+					}
+				});
+				
+				function publishAnswer(num) {
+					pubnub.publish({
+						channel: o_channel, message : [1, num]
+					});
+					O1.style.visibility = "hidden"; 
+					O2.style.visibility = "hidden"; 
+					O3.style.visibility = "hidden"; 
+					O4.style.visibility = "hidden"; 
+				}
+				
+			</script>
+	
 	</body>
+	
 	
 </html>
 
