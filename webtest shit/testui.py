@@ -14,7 +14,7 @@ class Chat(QDialog):
     def __init__(self):
         #pubnub
         super(Chat, self).__init__()
-        self.currentChannel = "main_eh"
+        self.currentChannel = "handler_1"
         self.pnconfig = PNConfiguration()
         self.pnconfig.subscribe_key = "sub-c-d785fd74-f08e-11e6-9283-02ee2ddab7fe"
         self.pnconfig.publish_key = "pub-c-afbd56e9-6341-4a07-b493-cbb3ebf25284"
