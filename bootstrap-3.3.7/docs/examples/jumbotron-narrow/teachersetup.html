@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
- <head>
+  <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -9,10 +9,10 @@
     <meta name="author" content="">
     <link rel="icon" href="../../favicon.ico">
 
-    <title>EZFeedback</title>
+    <title>Narrow Jumbotron Template for Bootstrap</title>
 
     <!-- Bootstrap core CSS -->
-    <link href="bootstrap.min.css" rel="stylesheet">
+    <link href="../../dist/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <link href="../../assets/css/ie10-viewport-bug-workaround.css" rel="stylesheet">
@@ -33,32 +33,35 @@
 
   <body>
 
-
-
     <div class="container">
       <div class="header clearfix">
         <nav>
           <ul class="nav nav-pills pull-right">
+            <li role="presentation" class="active"><a href="#">Home</a></li>
+            <li role="presentation"><a href="#">About</a></li>
+            <li role="presentation"><a href="#">Contact</a></li>
           </ul>
         </nav>
         <h3 class="text-muted">EZfeedback</h3>
       </div>
 
       <div class="jumbotron">
-
         <h1>Make Questions Here</h1>
+		
+		<p id="info"></p>
         <form id="file-form">
-          Question:<br>
+          Question*:<br>
           <input type="text" name="Question" id = "question" placeholder = "Question 1"><br>
-          Option 1:<br>
+          Option 1*:<br>
           <input type="text" name="Option 1" id = "option1" placeholder = "Option 1"><br>
-          Option 2:<br>
+          Option 2*:<br>
           <input type="text" name="Option 2" id = "option2" placeholder = "Option 2"><br>
           Option 3:<br>
           <input type="text" name="Option 3" id = "option3" placeholder = "Option 3"><br>
           Option 4:<br>
           <input type="text" name="Option 4" id = "option4" placeholder = "Option 4"><br><br>
-          <input id="submit" type="button" value="submit" onclick="doFunction(); xd(); publish();" />
+          <input id="submit" type="button" value="Submit" onclick="createQuestion();" />
+		  <input id="next" type="button" value="Next Step" style="visibility:hidden;" onclick="" />
         <div id="messages"></div>
       </form>
       </div>
@@ -70,59 +73,38 @@
     </div> <!-- /container -->
 
 
-    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-    <script src="../../assets/js/ie10-viewport-bug-workaround.js"></script>
-	<!-- OUR FUNCTIONS-->
-			<script>
-				function xd() {
-					console.log('works');
-				}
-			</script>
-			<script src="reader.js"></script>
-			<script src="publish.js"></script>
-			<script src="https://cdn.pubnub.com/sdk/javascript/pubnub.4.4.3.js"></script>
-
-
-			<script src="https://cdn.pubnub.com/sdk/javascript/pubnub.4.4.3.js">
-
-
-
-				function publish() {
-
-					pubnub = new PubNub({
-						publishKey : 'pub-c-afbd56e9-6341-4a07-b493-cbb3ebf25284',
-						subscribeKey : 'sub-c-d785fd74-f08e-11e6-9283-02ee2ddab7fe'
-					})
-
-					function publishSampleMessage() {
-						console.log("Since we're publishing on subscribe connectEvent, we're sure we'll receive the following publish.");
-						var publishConfig = {
-							channel : "hello_world",
-							message : "Hello from PubNub Docs!"
-						}
-						pubnub.publish(publishConfig, function(status, response) {
-							console.log(status, response);
-						})
-					}
-
-					pubnub.addListener({
-						status: function(statusEvent) {
-							if (statusEvent.category === "PNConnectedCategory") {
-								publishSampleMessage();
-							}
-						},
-						message: function(message) {
-							console.log("New Message!!", message);
-						},
-						presence: function(presenceEvent) {
-							// handle presence
-						}
-					})
-					console.log("Subscribing..");
-					pubnub.subscribe({
-						channels: ['hello_world']
-					});
-				};
-			</script>
+    <!--Our functions-->
+    <script src=http://cdn.pubnub.com/pubnub.min.js></script>
+	<script>
+		var pubnub = PUBNUB.init({publish_key:'pub-c-afbd56e9-6341-4a07-b493-cbb3ebf25284',subscribe_key:'sub-c-d785fd74-f08e-11e6-9283-02ee2ddab7fe',ssl:true});
+		var c_channel = 't_handler', o_channel = 's_handler';
+		var question = PUBNUB.$("question");
+		var O1 = PUBNUB.$("option1"), O2 = PUBNUB.$("option2"), O3 = PUBNUB.$("option3"), O4 = PUBNUB.$("option4");
+		var info = PUBNUB.$("info"), next = PUBNUB.$("next");
+		pubnub.subscribe({
+					channel  : [c_channel,o_channel],
+					callback : function(text) {}
+				});
+				
+		function createQuestion() {
+			if (question.value.replace(/ /g,'') != "" && O1.value.replace(/ /g,'') != "" && O2.value.replace(/ /g,'') != "") {
+				pubnub.publish({
+					channel : o_channel, message : [2, question.value, [O1.value, O2.value, O3.value, O4.value]] //'2' stores the question
+				});
+				question.value = "";
+				O1.value = "";
+				O2.value = "";
+				O3.value = "";
+				O4.value = "";
+				
+				console.log("Question successfully stored.");
+				info.innerHTML = "Question successfully created!";
+				next.style.visibility = "visible";
+			} else {
+				info.innerHTML = "Please fill in all the required (*) fields:";
+			}
+		}
+	</script>
+	
   </body>
 </html>
