@@ -52,10 +52,15 @@
 			<input id="O3" class="btn btn-info" style="visibility:hidden;" type="button" onclick="publishAnswer(2)"></input>
 			<input id="O4" class="btn btn-info" style="visibility:hidden;" type="button" onclick="publishAnswer(3)"></input>
 	  </div>
+    <div class = "jumbotron">
+      <h1 id = "feedback">How do you feel about this lecture?</h1>
+      <input type = "image"src = "http://pix.iemoji.com/images/emoji/apple/ios-9/256/sleeping-face.png" ></input>
+      <input type = "image"src = "http://pix.iemoji.com/images/emoji/apple/ios-9/256/disappointed-face.png" ></input>
+      <input type = "image"src = "http://pix.iemoji.com/images/emoji/apple/ios-9/256/grinning-face.png" ></input>
+    </div>
 
 		<script src=http://cdn.pubnub.com/pubnub.min.js></script>
 			<script>
-
 				var pubnub = PUBNUB.init({publish_key:'pub-c-afbd56e9-6341-4a07-b493-cbb3ebf25284',subscribe_key:'sub-c-d785fd74-f08e-11e6-9283-02ee2ddab7fe',ssl:true});
 				var c_channel = 's_handler', o_channel = 't_handler';
 				var question = PUBNUB.$("question");
@@ -85,7 +90,6 @@
 						}
 					}
 				});
-
 				function publishAnswer(num) {
 					if (num != "") {
 						pubnub.publish({
@@ -98,7 +102,6 @@
 					O3.style.visibility = "hidden";
 					O4.style.visibility = "hidden";
 				}
-
 			</script>
 
 	</body>
