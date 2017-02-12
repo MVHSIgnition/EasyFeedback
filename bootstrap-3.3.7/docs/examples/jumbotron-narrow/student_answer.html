@@ -12,10 +12,10 @@
     <title>EZFeedback</title>
 
     <!-- Bootstrap core CSS -->
-    <link href="bootstrap.min.css" rel="stylesheet">
+    <link href="../../dist/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-    <!--<link href="../../assets/css/ie10-viewport-bug-workaround.css" rel="stylesheet">-->
+    <link href="../../assets/css/ie10-viewport-bug-workaround.css" rel="stylesheet">
 
     <!-- Custom styles for this template -->
     <link href="jumbotron-narrow.css" rel="stylesheet">
@@ -70,11 +70,11 @@
 							O2.style.visibility = "visible";
 							O2.setAttribute("value", text[2][1]);
 							if (text[2][2] != "") {
-								O3.style.visibility = "visible"; 
+								O3.style.visibility = "visible";
 								O3.setAttribute("value", text[2][2]);
 							}
 							if (text[2][3] != "") {
-								O4.style.visibility = "visible"; 
+								O4.style.visibility = "visible";
 								O4.setAttribute("value", text[2][3]);
 							}
 							console.log(text);
@@ -93,10 +93,10 @@
 						});
 					}
 					question.innerHTML = "Awaiting Next Question..."
-					O1.style.visibility = "hidden"; 
-					O2.style.visibility = "hidden"; 
-					O3.style.visibility = "hidden"; 
-					O4.style.visibility = "hidden"; 
+					O1.style.visibility = "hidden";
+					O2.style.visibility = "hidden";
+					O3.style.visibility = "hidden";
+					O4.style.visibility = "hidden";
 				}
 
 			</script>
