@@ -34,21 +34,18 @@
   <body>
 
 
-  
+
     <div class="container">
       <div class="header clearfix">
         <nav>
           <ul class="nav nav-pills pull-right">
-            <li role="presentation" class="active"><a href="#">Home</a></li>
-            <li role="presentation"><a href="#">About</a></li>
-            <li role="presentation"><a href="#">Contact</a></li>
           </ul>
         </nav>
         <h3 class="text-muted">EZfeedback</h3>
       </div>
 
       <div class="jumbotron">
-	    	
+
         <h1>Make Questions Here</h1>
         <form id="file-form">
           Question:<br>
@@ -84,19 +81,19 @@
 			<script src="reader.js"></script>
 			<script src="publish.js"></script>
 			<script src="https://cdn.pubnub.com/sdk/javascript/pubnub.4.4.3.js"></script>
-			
-			
+
+
 			<script src="https://cdn.pubnub.com/sdk/javascript/pubnub.4.4.3.js">
-				
-				
-				
+
+
+
 				function publish() {
-   
+
 					pubnub = new PubNub({
 						publishKey : 'pub-c-afbd56e9-6341-4a07-b493-cbb3ebf25284',
 						subscribeKey : 'sub-c-d785fd74-f08e-11e6-9283-02ee2ddab7fe'
 					})
-					   
+
 					function publishSampleMessage() {
 						console.log("Since we're publishing on subscribe connectEvent, we're sure we'll receive the following publish.");
 						var publishConfig = {
@@ -107,7 +104,7 @@
 							console.log(status, response);
 						})
 					}
-					   
+
 					pubnub.addListener({
 						status: function(statusEvent) {
 							if (statusEvent.category === "PNConnectedCategory") {
@@ -120,10 +117,10 @@
 						presence: function(presenceEvent) {
 							// handle presence
 						}
-					})      
+					})
 					console.log("Subscribing..");
 					pubnub.subscribe({
-						channels: ['hello_world'] 
+						channels: ['hello_world']
 					});
 				};
 			</script>
