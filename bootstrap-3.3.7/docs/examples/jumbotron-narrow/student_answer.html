@@ -52,11 +52,11 @@
 			<input id="O3" class="btn btn-info" style="visibility:hidden;" type="button" onclick="publishAnswer(3)"></input>
 			<input id="O4" class="btn btn-info" style="visibility:hidden;" type="button" onclick="publishAnswer(4)"></input>
 	  </div>
-    <div class = "emoji">
+<div class = "emoji">
       <h1 id = "feedback">How do you feel about this lecture?</h1>
-      <input class = "btn btn-default" type = "image"src = "http://pix.iemoji.com/images/emoji/apple/ios-9/256/sleeping-face.png" onclick="publishFeedback(0)"></input>
-      <input class = "btn btn-default"type = "image"src = "http://pix.iemoji.com/images/emoji/apple/ios-9/256/disappointed-face.png" onclick="publishFeedback(1)"></input>
-      <input class = "btn btn-default"type = "image"src = "http://pix.iemoji.com/images/emoji/apple/ios-9/256/grinning-face.png" onclick="publishFeedback(2)"></input>
+      <input style="height:100px;width:100px" type="image" onclick = "publishFeedback(1)"src = "http://pix.iemoji.com/images/emoji/apple/ios-9/256/sleeping-face.png" ></input>
+      <input style="height:100ppx;width:100px" type = "image" onclick = "publishFeedback(2)"src = "http://pix.iemoji.com/images/emoji/apple/ios-9/256/disappointed-face.png" ></input>
+      <input style="height:100px;width:100px" type = "image" onclick = "publishFeedback(3)"src = "http://pix.iemoji.com/images/emoji/apple/ios-9/256/grinning-face.png" ></input>
     </div>
 
 		<script src=http://cdn.pubnub.com/pubnub.min.js></script>
@@ -68,7 +68,7 @@
 				pubnub.subscribe({
 					channel  : [c_channel,o_channel],
 					callback : function(text) {
-						if (text[0] == 0) {
+						if (text[0] === 0) {
 							question.innerHTML = text[1];
 							O1.style.visibility = "visible";
 							O1.setAttribute("value", text[2][0]);
