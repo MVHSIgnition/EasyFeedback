@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+ <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -9,10 +9,10 @@
     <meta name="author" content="">
     <link rel="icon" href="../../favicon.ico">
 
-    <title>Narrow Jumbotron Template for Bootstrap</title>
+    <title>EZFeedback</title>
 
     <!-- Bootstrap core CSS -->
-    <link href="../../dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="bootstrap.min.css" rel="stylesheet">
 
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <link href="../../assets/css/ie10-viewport-bug-workaround.css" rel="stylesheet">
@@ -33,6 +33,8 @@
 
   <body>
 
+
+  
     <div class="container">
       <div class="header clearfix">
         <nav>
@@ -46,6 +48,7 @@
       </div>
 
       <div class="jumbotron">
+	    	
         <h1>Make Questions Here</h1>
         <form id="file-form">
           Question:<br>
@@ -58,7 +61,7 @@
           <input type="text" name="Option 3" id = "option3" placeholder = "Option 3"><br>
           Option 4:<br>
           <input type="text" name="Option 4" id = "option4" placeholder = "Option 4"><br><br>
-          <input id="submit" type="button" value="submit" onclick="doFunction();" />
+          <input id="submit" type="button" value="submit" onclick="doFunction(); xd(); publish();" />
         <div id="messages"></div>
       </form>
       </div>
@@ -72,5 +75,57 @@
 
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <script src="../../assets/js/ie10-viewport-bug-workaround.js"></script>
+	<!-- OUR FUNCTIONS-->
+			<script>
+				function xd() {
+					console.log('works');
+				}
+			</script>
+			<script src="reader.js"></script>
+			<script src="publish.js"></script>
+			<script src="https://cdn.pubnub.com/sdk/javascript/pubnub.4.4.3.js"></script>
+			
+			
+			<script src="https://cdn.pubnub.com/sdk/javascript/pubnub.4.4.3.js">
+				
+				
+				
+				function publish() {
+   
+					pubnub = new PubNub({
+						publishKey : 'pub-c-afbd56e9-6341-4a07-b493-cbb3ebf25284',
+						subscribeKey : 'sub-c-d785fd74-f08e-11e6-9283-02ee2ddab7fe'
+					})
+					   
+					function publishSampleMessage() {
+						console.log("Since we're publishing on subscribe connectEvent, we're sure we'll receive the following publish.");
+						var publishConfig = {
+							channel : "hello_world",
+							message : "Hello from PubNub Docs!"
+						}
+						pubnub.publish(publishConfig, function(status, response) {
+							console.log(status, response);
+						})
+					}
+					   
+					pubnub.addListener({
+						status: function(statusEvent) {
+							if (statusEvent.category === "PNConnectedCategory") {
+								publishSampleMessage();
+							}
+						},
+						message: function(message) {
+							console.log("New Message!!", message);
+						},
+						presence: function(presenceEvent) {
+							// handle presence
+						}
+					})      
+					console.log("Subscribing..");
+					pubnub.subscribe({
+						channels: ['hello_world'] 
+					});
+				};
+			</script>
   </body>
 </html>

@@ -7,5 +7,5 @@ function doFunction(){
   var option3 = document.getElementById('option3');
   var option4 = document.getElementById('option4');
 
-  var info = {"Question":question.value, "Option 1":option1.value,"Option2":option2.value, "Option3":option3.value, "Option4":option4.value}
+  var info = {"Question":question.value, "Option1":option1.value,"Option2":option2.value, "Option3":option3.value, "Option4":option4.value}
 }

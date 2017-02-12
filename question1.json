@@ -1,7 +1,7 @@
 {
 "Question":"How are you feeling",
-"Option 1":"Good",
-"Option 2":"Bad",
-"Option 3":"OK",
-"Option 4":"Bored"
+"1":"Good",
+"2":"Bad",
+"3":"OK",
+"4":"Bored"
 }
