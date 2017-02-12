@@ -5,7 +5,6 @@ from pubnub.pnconfiguration import PNConfiguration
 from pubnub.pubnub import PubNub, SubscribeListener
 from pubnub.callbacks import SubscribeCallback
 from datetime import datetime
-import threading
 import sys
 
 #from pntest import console_enter
