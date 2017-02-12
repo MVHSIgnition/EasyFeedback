@@ -34,7 +34,7 @@
       <div class="header clearfix">
         <nav>
         </nav>
-        <h3 class="text-muted">EZFeedback</h3>
+        <h3 class="text-muted"><input style="height:100px;width:100px" type = "image" src = "logo.png" onclick = "location.href = 'index.html';"></input></h3>
       </div>
 
       <!--<div class="jumbotron">-->
@@ -47,12 +47,12 @@
 		<p id="b" style="visibility:hidden">b: 0</p>
 		<p id="c" style="visibility:hidden">c: 0</p>
 		<p id="d" style="visibility:hidden">d: 0</p>
-		
+
 		<div id="all" style="visibility:hidden">
 		  <h1 id="question" style="visibility:hidden;"></h1>
 		  <h1 id="data" style="visibility:hidden">Data</h1>
 		  <!--<button id="btn" onclick="startPoll()">Publish Next Question</button>-->
-		  
+
 		  <strong id="a">A: 0</strong><span class="pull-right" id="AP">0%</span>
 		  <div class="progress progress-danger active">
 			  <div class="bar" style="width: 0%;"></div>
@@ -70,7 +70,7 @@
 			  <div class="bar" style="width: 0%;"></div>
 		  </div>
 		</div>
-		
+
 		<button id="reset" class="btn" onclick="resetAll()" style="visibility:hidden">Stop Polling</button>
 		<!--end your code-->
       <!--</div>-->
@@ -99,12 +99,10 @@ function startPoll(){
 	all.style.visibility = "visible"
 	button.style.visibility = "hidden";
 	button2.style.visibility = "visible";
-
-
 	var channels = ['t_handler','s_handler'];
 	pubnub.subscribe({
 		channel  : channels,
-		callback : function(message) { 
+		callback : function(message) {
 			if(message[0] === 1){
 				var total = anum+bnum+cnum+dnum;
 				if(message[1] === 0){
@@ -127,7 +125,7 @@ function startPoll(){
 					d.innerHTML = "D: "+dnum;
 					DP.innerHTML = Math.round(dnum/total) + "%";
 				}
-				
+
 			}
 			else if(message[0] === 0){
 				console.log("hootis");
@@ -142,7 +140,6 @@ function startPoll(){
 	pubnub.publish({
 			channel : "s_handler", message : [0]
 		})
-
 	}
 function resetAll(){
 	pubnub.publish({
@@ -178,6 +175,5 @@ function resetAll(){
 	}
 }</script>
 <script>
-
 </script>
 </html>
