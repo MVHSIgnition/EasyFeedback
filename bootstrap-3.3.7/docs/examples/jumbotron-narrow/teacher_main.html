@@ -37,11 +37,11 @@
         <h3 class="text-muted">EZFeedback</h3>
       </div>
 
-      <div class="jumbotron">
+      <!--<div class="jumbotron">-->
 	  <!--start your code-->
         <h1 id="question" style ="visibility:hidden"></h1>
 		<h1 id="data" style="visibility:hidden">Data</h1>
-		<button id="btn" onclick="startPoll()">Publish Next Question</button>
+		<button id="btn" class="btn btn-primary" style="visibility:visible" onclick="startPoll()">Publish Next Question</button>
 
 		<p id="a" style="visibility:hidden">a: 0</p>
 		<p id="b" style="visibility:hidden">b: 0</p>
@@ -51,7 +51,7 @@
 		<div id="all" style="visibility:hidden">
 		  <h1 id="question" style="visibility:hidden;"></h1>
 		  <h1 id="data" style="visibility:hidden">Data</h1>
-		  <button id="btn" onclick="startPoll()">Publish Next Question</button>
+		  <!--<button id="btn" onclick="startPoll()">Publish Next Question</button>-->
 		  
 		  <strong id="a">A: 0</strong><span class="pull-right" id="AP">0%</span>
 		  <div class="progress progress-danger active">
@@ -71,9 +71,9 @@
 		  </div>
 		</div>
 		
-		<button id="reset" onclick="resetAll()" style="visibility:hidden">Stop Polling</button>
+		<button id="reset" class="btn" onclick="resetAll()" style="visibility:hidden">Stop Polling</button>
 		<!--end your code-->
-      </div>
+      <!--</div>-->
 
     </div> <!-- /container -->
 
