@@ -50,23 +50,34 @@
 		  <h1 id="data" style="visibility:hidden">Data</h1>
 		  <!--<button id="btn" onclick="startPoll()">Publish Next Question</button>-->
 
-		  <strong id="a">A: 0</strong><span class="pull-right" id="AP">0%</span>
-		  <div class="progress progress-danger active">
-			  <div id="aBar" class="bar" style="width: 0%;"></div>
+		  <strong id="a">A: 0</strong>
+		  <div class="progress">
+          <div id="aBar"class="progress-bar" role="progressbar" aria-valuenow="0"
+          aria-valuemin="0" aria-valuemax="100" style="width:0%">
+            <span class="sr-only" id="AP">0%</span>
+          </div>
 		  </div>
-		  <strong id="b">B: 0</strong><span class="pull-right" id="BP">0%</span>
-		  <div class="progress progress-info active">
-			  <div id="bBar" class="bar" style="width: 0%;"></div>
+		  <strong id="b">B: 0</strong>
+		  <div class="progress">
+          <div id="bBar" class="progress-bar" role="progressbar" aria-valuenow="0"
+          aria-valuemin="0" aria-valuemax="100" style="width:0%">
+            <span class="sr-only" id="BP">0%</span>
+          </div>
 		  </div>
-		  <strong id="c">C: 0</strong><span class="pull-right" id="CP">0%</span>
-		  <div class="progress progress-success active">
-			  <div id="cBar" class="bar" style="width: 0%;"></div>
+		  <strong id="c">C: 0</strong>
+		  <div class="progress">
+          <div id="cBar" class="progress-bar" role="progressbar" aria-valuenow="0"
+          aria-valuemin="0" aria-valuemax="100" style="width:0%">
+            <span class="sr-only" id="CP">0%</span>
+          </div>
 		  </div>
-		  <strong id="d">D: 0</strong><span class="pull-right" id="DP">0%</span>
-		  <div class="progress progress-warning active">
-			  <div id="dBar" class="bar" style="width: 10%;"></div>
+		  <strong id="d">D: 0</strong>
+		  <div class="progress">
+          <div id="dBar" class="progress-bar" role="progressbar" aria-valuenow="0"
+          aria-valuemin="0" aria-valuemax="100" style="width:0%">
+            <span class="sr-only" id="DP">0%</span>
+          </div>
 		  </div>
-		</div>
 		
 		
 		
@@ -91,100 +102,31 @@ var anum = 0, bnum = 0, cnum =0, dnum = 0;
 var stopvar = false;
 var pubnub;
 
-function startPoll(){
-	var a = $('#a'), b = $('#b'), c = $('#c'), d = $('#d'), button = $('#btn'),button2 = $('#reset'), data = $('#data');
-	var all = $('#all');
-	var AP = $('#AP'), BP = $('#BP'), CP = $('#CP'), DP = $('#DP');
-	var aBar = $("#aBar"), bBar = $("#bBar"), cBar = $("#cBar"), dBar = $("#dBar");
-	var qhtml = $('#question');
-	qhtml.css("visibility:visible;");
-	/*a.style.visibility = "visible";
-	b.style.visibility = "visible";
-	c.style.visibility = "visible";
-	d.style.visibility = "visible";*/
-	all.css("visibility:visible;")
-	button.css("visibility:hidden;")
-	button2.css("visibility:visible;")
-	
-	pubnub.addListener({
-    
-    message: function(payload) {
-		var message = payload.message;
-	
-		console.log(message);
-		if(message[0] === 1){
-				console.log(message);
-				if(message[1] === 1){
-					anum += 1;
-					a.innerHTML = "A: "+anum;
-					console.log(anum);
-					
-				}
-				else if(message[1] == 2){
-					bnum += 1;
-					b.innerHTML = "B: "+bnum;
-					console.log(bnum);
-					
-				}
-				else if(message[1] == 3){
-					cnum += 1;
-					c.innerHTML = "C: "+cnum;
-					console.log(cnum);
-					
-				}
-				else if(message[1] == 4){
-					dnum += 1;
-					d.innerHTML = "D: "+dnum;
-					console.log(dnum);
-					
-				}
-				total = anum+bnum+cnum+dnum;
-				DP.innerHTML = Math.round(dnum/total) * 100 + "%";
-				dBar.style.width = Math.round(dnum/total) * 100 + "%";
-				console.log(dBar.style.width);
-				CP.innerHTML = Math.round(cnum/total) * 100 + "%";
-				cBar.style.width = Math.round(cnum/total) * 100 + "%";
-				BP.innerHTML = Math.round(bnum/total) * 100 + "%";
-				bBar.style.width = Math.round(bnum/total) * 100 + "%";
-				AP.innerHTML = Math.round(anum/total) * 100 + "%";
-				aBar.style.width = Math.round(anum/total) * 100 + "%";
-				
+var a = $('#a'), b = $('#b'), c = $('#c'), d = $('#d'), button = $('#btn'),button2 = $('#reset'), data = $('#data');
+var all = $('#all');
+var AP = $('#AP'), BP = $('#BP'), CP = $('#CP'), DP = $('#DP');
+var aBar = $("#aBar"), bBar = $("#bBar"), cBar = $("#cBar"), dBar = $("#dBar");
+var qhtml = $('#question');
 
-			}
-			else if(message[0] === 0){
-				console.log(message);
-				qhtml.innerHTML = message[1];
-				console.log(message[1]);
-			}
-			else if(message[0] == 4){
-				stopvar = true;
-			}
-    },
-    presence: function(p) {
-    },
-    status: function(s) {
-        // handle status
-    }
-	})
-	
-	pubnub.subscribe({
-		channels: [c_channel, o_channel],
-	});
-	
+function startPoll(){
+	qhtml.css('visibility','visible');
+	all.css("visibility","visible");
+	button.css("visibility","hidden");
+	button2.css("visibility","visible");
 	
 	pubnub.publish({
 			channel : o_channel, message : [0]
-		})
+		});
 	}
 function resetAll(){
-	publish({
+	pubnub.publish({
         channel : o_channel, message : [3,qhtml.value,[anum,bnum,cnum,dnum]]
     })
 	total = 0;
 	anum = 0, bnum = 0, cnum =0, dnum = 0;
 	if(stopvar == false){
-		qhtml.style.visibility = "hidden";
-		all.style.visibility = "hidden";
+		qhtml.css("visibility","hidden");
+		all.css("visibility","hidden");
 		//a.style.visibility = "hidden";
 		a.innerHTML = "A: 0";
 		AP.innerHTML = "0%";
@@ -197,8 +139,8 @@ function resetAll(){
 		//d.style.visibility = "hidden";
 		d.innerHTML = "D: 0";
 		DP.innerHTML = "0%";
-		button.style.visibility = "visible";
-		button2.style.visibility = "hidden";
+		button.css("visibility","visible");
+		button2.css("visibility","hidden");
 	}else{
 		qhtml.style.visibility = "hidden";
 		a.style.visibility = "hidden";
@@ -213,8 +155,8 @@ function resetAll(){
 		d.style.visibility = "hidden";
 		d.innerHTML = "d: 0";
 		DP.innerHTML = "0%";
-		button.style.visibility = "hidden";
-		button2.style.visibility = "hidden";
+		button.css("visibility","hidden");
+		button2.css("visibility","hidden");
 		data.style.visibility = "visible";
 	}
 }
@@ -225,6 +167,77 @@ $(document).ready(function() {
 	subscribe_key:'sub-c-d785fd74-f08e-11e6-9283-02ee2ddab7fe',
 	ssl:true
 	});
+	
+pubnub.subscribe({
+		channels: [c_channel, o_channel],
+	});
+	
+pubnub.addListener({
+    
+    message: function(payload) {
+		var message = payload.message;
+	
+		console.log(message);
+		if(message[0] === 1){
+				console.log(message);
+				if(message[1] === 1){
+					anum += 1;
+					a.html("A: "+anum);
+					console.log(anum);
+					
+				}
+				else if(message[1] == 2){
+					bnum += 1;
+					b.html("B: "+bnum);
+					console.log(bnum);
+					
+				}
+				else if(message[1] == 3){
+					cnum += 1;
+					c.html("C: "+cnum);
+					console.log(cnum);
+					
+				}
+				else if(message[1] == 4){
+					dnum += 1;
+					d.html("D: "+dnum);
+					console.log(dnum);
+					
+				}
+				total = anum+bnum+cnum+dnum;
+				 
+				DP.innerHTML = Math.round(dnum/total) * 100 + "%";
+				//dBar.style.width = Math.round(dnum/total) * 100 + "%";
+				dBar.css("width", Math.round(dnum/total) * 100 + "%");
+				CP.innerHTML = Math.round(cnum/total) * 100 + "%";
+				cBar.css("width", Math.round(cnum/total) * 100 + "%");
+				//cBar.style.width = Math.round(cnum/total) * 100 + "%";
+				BP.innerHTML = Math.round(bnum/total) * 100 + "%";
+				bBar.css("width", Math.round(bnum/total) * 100 + "%");
+				//bBar.style.width = Math.round(bnum/total) * 100 + "%";
+				AP.innerHTML = Math.round(anum/total) * 100 + "%";
+				aBar.css("width", Math.round(anum/total) * 100 + "%");
+				//aBar.style.width = Math.round(anum/total) * 100 + "%";
+				console.log('setting percent');
+				console.log("a", Math.round(anum/total) * 100 + "%")
+				
+
+			}
+			else if(message[0] === 0){
+				console.log(message);
+				qhtml.html(message[1]);
+				console.log(message[1]);
+			}
+			else if(message[0] == 4){
+				stopvar = true;
+			}
+    },
+    presence: function(p) {
+    },
+    status: function(s) {
+        // handle status
+    }
+});
 
 $('#reset').click(resetAll);
 $('#btn').click(startPoll);
