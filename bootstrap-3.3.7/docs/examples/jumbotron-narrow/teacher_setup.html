@@ -40,6 +40,7 @@
       </div>
 
       <!--<div class="jumbotron">-->
+		<h1 id="rmcd">Room Code: 834491</h1>
         <h1 style="align:center">Make Questions Here</h1>
 
 		<p id="info"></p>
@@ -82,6 +83,8 @@
 		var question = PUBNUB.$("question");
 		var O1 = PUBNUB.$("option1"), O2 = PUBNUB.$("option2"), O3 = PUBNUB.$("option3"), O4 = PUBNUB.$("option4");
 		var info = PUBNUB.$("info"), next = PUBNUB.$("next");
+		var rmcd = PUBNUB.$('#rmcd');
+
 		pubnub.subscribe({
 					channel  : [c_channel,o_channel],
 					callback : function(text) {}
@@ -109,7 +112,7 @@
 		}
 
 		function nextPage() {
-			pubnub.unsubscribe({channel: [c_channel,o_channel]});
+			pubnub.unsubscribe({channel: [c_channel,o_channel,"l_handler"]});
 			window.location.href = "teacher_main.html";
 		}
 	</script>
