@@ -5,7 +5,7 @@ app = Flask(__name__)
 def index():
   return render_template('index.html')
 
-@app.route('/my-link/')
+@app.route('/student/')
 def my_link():
   print('I got clicked!')
 
