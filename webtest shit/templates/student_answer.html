@@ -34,14 +34,11 @@
   <body>
 
 
-  
+
     <div class="container">
       <div class="header clearfix">
         <nav>
           <ul class="nav nav-pills pull-right">
-            <li role="presentation" class="active"><a href="#">Home</a></li>
-            <li role="presentation"><a href="#">About</a></li>
-            <li role="presentation"><a href="#">Contact</a></li>
           </ul>
         </nav>
         <h3 class="text-muted">EZfeedback</h3>
@@ -55,10 +52,10 @@
 			<input id="O3" class="btn btn-info" style="visibility:hidden;" type="button" onclick="publishAnswer(2)"></input>
 			<input id="O4" class="btn btn-info" style="visibility:hidden;" type="button" onclick="publishAnswer(3)"></input>
 	  </div>
-	
+
 		<script src=http://cdn.pubnub.com/pubnub.min.js></script>
 			<script>
-				
+
 				var pubnub = PUBNUB.init({publish_key:'pub-c-afbd56e9-6341-4a07-b493-cbb3ebf25284',subscribe_key:'sub-c-d785fd74-f08e-11e6-9283-02ee2ddab7fe',ssl:true});
 				var c_channel = 's_handler', o_channel = 't_handler';
 				var question = PUBNUB.$("question");
@@ -68,34 +65,33 @@
 					callback : function(text) {
 						if (text[0] == 0) {
 							question.innerHTML = text[1];
-							O1.style.visibility = "visible"; 
+							O1.style.visibility = "visible";
 							O1.setAttribute("value", text[2][0]);
-							O2.style.visibility = "visible"; 
+							O2.style.visibility = "visible";
 							O2.setAttribute("value", text[2][1]);
-							O3.style.visibility = "visible"; 
+							O3.style.visibility = "visible";
 							O3.setAttribute("value", text[2][2]);
-							O4.style.visibility = "visible"; 
+							O4.style.visibility = "visible";
 							O4.setAttribute("value", text[2][3]);
 							console.log(text);
 							console.log(text[2])
 							}
 					}
 				});
-				
+
 				function publishAnswer(num) {
 					pubnub.publish({
 						channel: o_channel, message : [1, num]
 					});
-					O1.style.visibility = "hidden"; 
-					O2.style.visibility = "hidden"; 
-					O3.style.visibility = "hidden"; 
-					O4.style.visibility = "hidden"; 
+					O1.style.visibility = "hidden";
+					O2.style.visibility = "hidden";
+					O3.style.visibility = "hidden";
+					O4.style.visibility = "hidden";
 				}
-				
-			</script>
-	
-	</body>
-	
-	
-</html>
 
+			</script>
+
+	</body>
+
+
+</html>
