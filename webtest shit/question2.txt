@@ -1,2 +1,0 @@
-["How big is toads?"]
-["10 stack","3 stack","2 stack","0 stack"]
