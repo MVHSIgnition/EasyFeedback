@@ -37,19 +37,19 @@
         <nav>
         </nav>
 
-        <h3 class="text-muted"><input style="height:100px;width:100px" type = "image" src = "logo.png" onclick = "location.href = 'index.html';"></input></h3>
+        <h3 class="text-muted"><input style="height:100px;width:150px" type = "image" src = "img/logo.png" onclick = "location.href = 'index.html';"></input></h3>
       </div>
 
 
 
       <div class="jumbotron">
-        <h3 class="text-muted"><input style="height:100px;width:150px" type = "image" src = "logo.png" onclick = "location.href = 'index.html';"></input></h3>
+        <h3 class="text-muted"><input style="height:100px;width:150px" type = "image" src = "img/logo.png" onclick = "location.href = 'index.html';"></input></h3>
 
         <form id="file-form">
-          <label for="code">Class Code:</label><br>
-          <input type="text" class="form-control" name="classcode" id = "code" placeholder="Class Code"><br>
+          <label for="code">Room Code:</label><br>
+          <input type="text" class="form-control" name="roomcode" id="code" placeholder="Room Code"><br>
           <input type = "text" class = "form-control" name = "name" id = "namebox" placeholder = "Enter your name here"><br>
-          <input id="submit" class="btn btn-primary" type="button" value="Submit" onclick = "location.href = 'student_answer.html';" />
+          <input id="submit" class="btn btn-primary" type="button" value="Submit" onclick = "connectRoom()" />
           </form>
       </div>
 
@@ -67,38 +67,23 @@
 
 
 	<script>
-		var pubnub;
-		var o_channel = 'l_handler';
-		
-		$(document).ready(function() {
-			pubnub = new PubNub({
-			publish_key:'pub-c-afbd56e9-6341-4a07-b493-cbb3ebf25284',
-			subscribe_key:'sub-c-d785fd74-f08e-11e6-9283-02ee2ddab7fe',
-			ssl:true
-		});
-		$("#submit").click(connectRoom);
+var roomCode = $('#code');
 
-		})
-		
-		
-		
+var pubnub = new PubNub({
+	publish_key:'pub-c-18f40226-157c-4c75-b3a8-95302621baaf',
+	subscribe_key:'sub-c-f005c270-f6f7-11e6-b0ac-0619f8945a4f',
+	ssl:true
+});	
 
+function connectRoom(){
+	var s_channel = 'student.room--' + roomCode.val(); //student channel
 
-		function connectRoom(){
-				pubnub.subscribe({
-					channel  : "l_handler", callback : function(){}
-					});
-			var roomNum = $('#code');
-			console.log("aaa");
-			pubnub.publish({
-				channel: "l_handler", message : [1,roomNum.value]
-			});
-			window.location.href = "student_answer.html";
-		}
-		
-		
+	pubnub.subscribe({
+		channel : s_channel
+	});
 	
-	
+	window.location.href = "student_answer.html?id=" + roomCode.val();
+}	
 	</script>
   </body>
 </html>

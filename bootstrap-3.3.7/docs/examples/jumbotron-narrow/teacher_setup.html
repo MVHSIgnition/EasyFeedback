@@ -36,11 +36,11 @@
       <div class="header clearfix">
         <nav>
         </nav>
-        <h3 class="text-muted"><input style="height:100px;width:150px" type = "image" src = "logo.png" onclick = "location.href = 'index.html';"></input></h3>
+        <h3 class="text-muted"><input style="height:100px;width:150px" type = "image" src = "img/logo.png" onclick = "location.href = 'index.html';"></input></h3>
       </div>
 
       <!--<div class="jumbotron">-->
-		<h1 id="rmcd">Room Code: 834491</h1>
+		<h1>Room Code: <strong id="roomCode"></strong></h1>
         <h1 style="align:center">Make Questions Here</h1>
 
 		<p id="info"></p>
@@ -66,8 +66,8 @@
 			  <input type="text" class="form-control" name="Option 4" id = "option4" placeholder = "Option 4"><br>
 			</div>
 			<br>
-          <input id="submit" class="btn btn-primary" type="button" value="Submit" onclick="createQuestion();" />
-		  <input id="next" class="btn" type="button" value="Next Step" style="visibility:hidden;" onclick="nextPage()" />
+          <input id="submit" class="btn btn-primary" type="button" value="Submit" onclick="createQuestion()"/>
+		  <input id="next" class="btn" type="button" value="Next Step" style="visibility:hidden;" onclick="nextPage()"/>
         <div id="messages"></div>
       </form>
       <!--</div>-->
@@ -76,46 +76,83 @@
 
 
     <!--Our functions-->
-    <script src=http://cdn.pubnub.com/pubnub.min.js></script>
-	<script>
-		var pubnub = PUBNUB.init({publish_key:'pub-c-afbd56e9-6341-4a07-b493-cbb3ebf25284',subscribe_key:'sub-c-d785fd74-f08e-11e6-9283-02ee2ddab7fe',ssl:true});
-		var c_channel = 't_handler', o_channel = 's_handler';
-		var question = PUBNUB.$("question");
-		var O1 = PUBNUB.$("option1"), O2 = PUBNUB.$("option2"), O3 = PUBNUB.$("option3"), O4 = PUBNUB.$("option4");
-		var info = PUBNUB.$("info"), next = PUBNUB.$("next");
-		var rmcd = PUBNUB.$('#rmcd');
+<script src="https://cdn.pubnub.com/sdk/javascript/pubnub.4.4.3.js"></script>
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+<script>
+var question = $('#question');
+var O1 = $('#option1'), O2 = $('#option2'), O3 = $('#option3'), O4 = $('#option4');
+var info = $('#info'), next = $('#next');
+var roomCode = $('#roomCode');
 
-		pubnub.subscribe({
-					channel  : [c_channel,o_channel],
-					callback : function(text) {}
-				});
+var roomcode = '';
+var rand = (Math.random() * 10000).toFixed(0);
 
-		function createQuestion() {
-			if (question.value.replace(/ /g,'') != "" && O1.value.replace(/ /g,'') != "" && O2.value.replace(/ /g,'') != "") {
-				pubnub.publish({
-					channel : o_channel, message : [2, question.value, [O1.value, O2.value, O3.value, O4.value]] //'2' stores the question
-				});
-				question.value = "";
-				O1.value = "";
-				O2.value = "";
-				O3.value = "";
-				O4.value = "";
+roomcode = (getRoomCode()) ? getRoomCode() : rand;
+roomCode.html(roomcode);
 
-				console.log("Question successfully stored.");
-				info.innerHTML = "Question successfully created!";
-				info.style.color = "green";
-				next.style.visibility = "visible";
-			} else {
-				info.innerHTML = "Please fill in all the required (*) fields:";
-				info.style.color = "red"
+var h_channel = "rooms" //handler channel
+var t_channel = "teacher.room--" + roomcode; //teacher channel
+
+var pubnub = new PubNub ({
+	publish_key:'pub-c-18f40226-157c-4c75-b3a8-95302621baaf',
+	subscribe_key:'sub-c-f005c270-f6f7-11e6-b0ac-0619f8945a4f',
+	ssl:true
+});
+
+pubnub.publish({
+	channel : h_channel,
+	message : roomcode
+});
+
+function getRoomCode() {
+	if(window.location.search.substring(1).split('?')[0].split('=')[0] !== 'room') {
+      return null;
+    } else {
+      return window.location.search.substring(1).split('?')[0].split('=')[1];
+    }
+}
+
+function createQuestion() {
+	if (question.val().replace(/ /g,'') != "" && O1.val().replace(/ /g,'') != "" && O2.val().replace(/ /g,'') != "") {
+	console.log(question.val());
+		pubnub.publish({
+				channel : t_channel, 
+				message : {
+					room : roomcode,
+					question : [question.val(), [O1.val(), O2.val(), O3.val(), O4.val()]],
+					action : "store"
+				}
+			},
+			function (status, response) {
+				if (status.error) { //not successful
+					console.log(status);
+					info.html("Error when creating question. Please try again.");
+					info.css("color", "red");
+				} else { //successful
+					console.log("message Published w/ timetoken", response.timetoken)
+					question.val("");
+					O1.val("");
+					O2.val("");
+					O3.val("");
+					O4.val("");
+
+					console.log("Question successfully stored.");
+					info.html("Question successfully created!");
+					info.css("color", "green");
+					next.css("visibility", "visible");
+				}
 			}
-		}
+		);
+	} else {
+		info.html("Please fill in all the required (*) fields:");
+		info.css("color", "red");
+	}
+}
 
-		function nextPage() {
-			pubnub.unsubscribe({channel: [c_channel,o_channel,"l_handler"]});
-			window.location.href = "teacher_main.html";
-		}
-	</script>
+function nextPage() {
+	window.location.href = "teacher_main.html?room=" + roomcode;
+}
+</script>
 
   </body>
 </html>

@@ -34,7 +34,7 @@
       <div class="header clearfix">
         <nav>
         </nav>
-        <h3 class="text-muted"><input style="height:100px;width:150px" type = "image" src = "logo.png" onclick = "location.href = 'index.html';"></input></h3>
+        <h3 class="text-muted"><input style="height:100px;width:150px" type = "image" src = "img/logo.png" onclick = "location.href = 'index.html';"></input></h3>
       </div>
 
       <!--<div class="jumbotron">-->
@@ -42,13 +42,12 @@
         <h1 id="question" style ="visibility:hidden"></h1>
 		<h1 id="data" style="visibility:hidden">Data</h1>
 
-		<button id="btn" class="btn btn-primary" style="visibility:visible">Publish Next Question</button>
+		<button id="btn" class="btn btn-primary" style="visibility:visible" onclick="startPoll()">Publish Next Question</button>
 		
 		<div id="all" class="span6" style="visibility:hidden">
 
 		  <h1 id="question" style="visibility:hidden;"></h1>
 		  <h1 id="data" style="visibility:hidden">Data</h1>
-		  <!--<button id="btn" onclick="startPoll()">Publish Next Question</button>-->
 
 		  <strong id="a">A: 0</strong>
 		  <div class="progress">
@@ -78,37 +77,34 @@
             <span class="sr-only" id="DP">0%</span>
           </div>
 		  </div>
-		  <h1>FEEDBACK</h1>
-		  		  <strong id="bo">Boring</strong>
-		  <div class="progress">
-          <div id="bore" class="progress-bar" role="progressbar" aria-valuenow="0"
-          aria-valuemin="0" aria-valuemax="100" style="width:0%">
-            <span class="sr-only" id="BP">0%</span>
-          </div>
-		  </div>
-		  <strong id="ba">Bad</strong>
-		  <div class="progress">
-          <div id="bad" class="progress-bar" role="progressbar" aria-valuenow="0"
-          aria-valuemin="0" aria-valuemax="100" style="width:0%">
-            <span class="sr-only" id="CP">0%</span>
-          </div>
-		  </div>
-		  <strong id="g">Good</strong>
-		  <div class="progress">
-          <div id="good" class="progress-bar" role="progressbar" aria-valuenow="0"
-          aria-valuemin="0" aria-valuemax="100" style="width:0%">
-            <span class="sr-only" id="DP">0%</span>
-		          </div>
-		  </div>
-		
-		
-		
-		<button id="reset" class="btn"  style="visibility:hidden">Stop Polling</button>
-		<!--end your code-->
-      <!--</div>-->
 
-    </div> <!-- /container -->
-
+		</div>
+		
+		<div id="feedback">
+			<h1>FEEDBACK</h1>
+				<strong id="bo">Boring</strong>
+			<div class="progress">
+			  <div id="bore" class="progress-bar" role="progressbar" aria-valuenow="0"
+			  aria-valuemin="0" aria-valuemax="100" style="width:0%">
+				<span class="sr-only" id="BP">0%</span>
+			  </div>
+			  </div>
+			  <strong id="ba">Bad</strong>
+			  <div class="progress">
+			  <div id="bad" class="progress-bar" role="progressbar" aria-valuenow="0"
+			  aria-valuemin="0" aria-valuemax="100" style="width:0%">
+				<span class="sr-only" id="CP">0%</span>
+			  </div>
+			  </div>
+			  <strong id="g">Good</strong>
+			  <div class="progress">
+			  <div id="good" class="progress-bar" role="progressbar" aria-valuenow="0"
+			  aria-valuemin="0" aria-valuemax="100" style="width:0%">
+				<span class="sr-only" id="DP">0%</span>
+					  </div>
+			  </div>
+		</div>
+	</div>
 
 </body>
 
@@ -117,12 +113,11 @@
 <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 <script>
 
-var c_channel = 't_handler', o_channel = 's_handler';
+var t_channel = 't_handler', s_channel = 's_handler';
 var total = 0;
 
 var anum = 0, bnum = 0, cnum =0, dnum = 0;
 var stopvar = false;
-var pubnub;
 
 var a = $('#a'), b = $('#b'), c = $('#c'), d = $('#d'), button = $('#btn'),button2 = $('#reset'), data = $('#data');
 var all = $('#all');
@@ -131,81 +126,22 @@ var aBar = $("#aBar"), bBar = $("#bBar"), cBar = $("#cBar"), dBar = $("#dBar");
 var qhtml = $('#question');
 var good = $("#good"), bad = $("#bad"), bore = $("#bore");
 var borenum = 0, goodnum = 0, badnum = 0;
-var totemot
+var totemot;
 
-function startPoll(){
-	qhtml.css('visibility','visible');
-	all.css("visibility","visible");
-	button.css("visibility","hidden");
-	button2.css("visibility","visible");
-	
-	pubnub.publish({
-			channel : o_channel, message : [0]
-		});
-	}
-function resetAll(){
-	pubnub.publish({
-        channel : o_channel, message : [3,qhtml.value,[anum,bnum,cnum,dnum]]
-    })
-	total = 0;
-	anum = 0, bnum = 0, cnum =0, dnum = 0;
-	if(stopvar == false){
-		qhtml.css("visibility","hidden");
-		all.css("visibility","hidden");
-		//a.style.visibility = "hidden";
-		a.html("A: 0");
-		//b.style.visibility = "hidden";
-		b.html("B: 0");
-		//c.style.visibility = "hidden";
-		c.html("C: 0");
-		//d.style.visibility = "hidden";
-		d.html("D: 0");
-		button.css("visibility","visible");
-		button2.css("visibility","hidden");
-		aBar.css("width", "0%");
-		bBar.css("width", "0%");
-		cBar.css("width", "0%");
-		dBar.css("width", "0%");
-	}else{
-		qhtml.style.visibility = "hidden";
-		a.style.visibility = "hidden";
-		a.innerHTML = "a: 0";
-		AP.innerHTML = "0%";
-		b.style.visibility = "hidden";
-		b.innerHTML = "b: 0";
-		BP.innerHTML = "0%";
-		c.style.visibility = "hidden";
-		c.innerHTML = "c: 0";
-		CP.innerHTML = "0%";
-		d.style.visibility = "hidden";
-		d.innerHTML = "d: 0";
-		DP.innerHTML = "0%";
-		button.css("visibility","hidden");
-		button2.css("visibility","hidden");
-		data.style.visibility = "visible";
-	}
-}
-
-$(document).ready(function() {
-  pubnub = new PubNub({
-	publish_key:'pub-c-afbd56e9-6341-4a07-b493-cbb3ebf25284',
-	subscribe_key:'sub-c-d785fd74-f08e-11e6-9283-02ee2ddab7fe',
+var pubnub = new PubNub({
+	publish_key:'pub-c-18f40226-157c-4c75-b3a8-95302621baaf',
+	subscribe_key:'sub-c-f005c270-f6f7-11e6-b0ac-0619f8945a4f',
 	ssl:true
 	});
-
-
-
-
-
 	
 pubnub.subscribe({
-		channels: [c_channel, o_channel],
+		channel: t_channel
 	});
 
 	
 pubnub.addListener({
-    
-    message: function(payload) {
+	
+	message: function(payload) {
 		var message = payload.message;
 	
 		console.log(message);
@@ -237,21 +173,18 @@ pubnub.addListener({
 				}
 				total = anum+bnum+cnum+dnum;
 				 
-				DP.innerHTML = Math.round(dnum/total * 100) + "%";
+				//DP.innerHTML = Math.round(dnum/total * 100) + "%";
 				//dBar.style.width = Math.round(dnum/total) * 100 + "%";
 				dBar.css("width", Math.round(dnum/total * 100) + "%");
-				CP.innerHTML = Math.round(cnum/total * 100) + "%";
+				//CP.innerHTML = Math.round(cnum/total * 100) + "%";
 				cBar.css("width", Math.round(cnum/total * 100) + "%");
 				//cBar.style.width = Math.round(cnum/total) * 100 + "%";
-				BP.innerHTML = Math.round(bnum/total * 100) + "%";
+				//BP.innerHTML = Math.round(bnum/total * 100) + "%";
 				bBar.css("width", Math.round(bnum/total * 100) + "%");
-				console.log("b",Math.round(bnum/total*100) + "%");
 				//bBar.style.width = Math.round(bnum/total) * 100 + "%";
-				AP.innerHTML = Math.round(anum/total * 100) + "%";
+				//AP.innerHTML = Math.round(anum/total * 100) + "%";
 				aBar.css("width", Math.round(anum/total * 100) + "%");
 				//aBar.style.width = Math.round(anum/total) * 100 + "%";
-				console.log('setting percent');
-				console.log("a", Math.round(anum/total * 100) + "%")
 				
 
 			}
@@ -279,19 +212,67 @@ pubnub.addListener({
 				good.css("width", Math.round(goodnum/totemot * 100) + "%");
 				bad.css("width", Math.round(badnum/totemot * 100) + "%");
 			}
-    },
-    presence: function(p) {
-    },
-    status: function(s) {
-        // handle status
-    }
+	},
+	presence: function(p) {
+	},
+	status: function(s) {
+		// handle status
+	}
 });
 
-$('#reset').click(resetAll);
-$('#btn').click(startPoll);
-})
-
-</script>
-<script>
+function startPoll(){
+	qhtml.css("visibility","visible");
+	all.css("visibility","visible");
+	button.attr("class","btn");
+	button.attr("onclick","resetAll()");
+	button.html("Stop Polling");
+	
+	pubnub.publish({
+			channel : t_channel, 
+			message : {
+				room : roomcode,
+				action : "retrieve" //retrieve next question (publishes to student inside the handler)
+			}
+		});
+	}
+function resetAll(){
+	/*pubnub.publish({
+		channel : t_channel, message : [3,qhtml.value,[anum,bnum,cnum,dnum]]
+	})*/
+	total = 0;
+	anum = 0, bnum = 0, cnum =0, dnum = 0;
+	if(stopvar == false){
+		qhtml.css("visibility","hidden");
+		all.css("visibility","hidden");
+		a.html("A: 0");
+		b.html("B: 0");
+		c.html("C: 0");
+		d.html("D: 0");
+		button.attr("class","btn btn-primary");
+		button.attr("onclick","startPoll()");
+		button.html("Publish Next Question");
+		aBar.css("width", "0%");
+		bBar.css("width", "0%");
+		cBar.css("width", "0%");
+		dBar.css("width", "0%");
+	}else{
+		qhtml.style.visibility = "hidden";
+		a.style.visibility = "hidden";
+		a.innerHTML = "a: 0";
+		AP.innerHTML = "0%";
+		b.style.visibility = "hidden";
+		b.innerHTML = "b: 0";
+		BP.innerHTML = "0%";
+		c.style.visibility = "hidden";
+		c.innerHTML = "c: 0";
+		CP.innerHTML = "0%";
+		d.style.visibility = "hidden";
+		d.innerHTML = "d: 0";
+		DP.innerHTML = "0%";
+		button.css("visibility","hidden");
+		button2.css("visibility","hidden");
+		data.style.visibility = "visible";
+	}
+}
 </script>
 </html>
