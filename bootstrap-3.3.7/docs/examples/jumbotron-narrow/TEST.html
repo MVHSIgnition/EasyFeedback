@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<body>
+<p id="message"></p>
+<button onclick="publish()">click</button>
+</body>
+<script src="https://cdn.pubnub.com/sdk/javascript/pubnub.4.4.3.js"></script>
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+<script>
+var message = $('#message');
+/*var pubnub = new PubNub ({
+	publish_key:'pub-c-18f40226-157c-4c75-b3a8-95302621baaf',
+	subscribe_key:'sub-c-f005c270-f6f7-11e6-b0ac-0619f8945a4f',
+	ssl:true
+});*/
+function publish() {
+   
+    var pubnub = new PubNub({
+        publishKey : 'pub-c-18f40226-157c-4c75-b3a8-95302621baaf',
+        subscribeKey : 'sub-c-f005c270-f6f7-11e6-b0ac-0619f8945a4f'
+    })
+       
+    function publishSampleMessage() {
+        console.log("Since we're publishing on subscribe connectEvent, we're sure we'll receive the following publish.");
+        var publishConfig = {
+            channel : "hello_world",
+            message : "Hello from PubNub Docs!"
+        }
+        pubnub.publish(publishConfig, function(status, response) {
+            console.log(status, response);
+        })
+    }
+       
+    pubnub.addListener({
+        status: function(statusEvent) {
+            if (statusEvent.category === "PNConnectedCategory") {
+                publishSampleMessage();
+            }
+        },
+        message: function(message) {
+            console.log("New Message!!", message);
+        },
+        presence: function(presenceEvent) {
+            // handle presence
+        }
+    })      
+    console.log("Subscribing..");
+    pubnub.subscribe({
+        channels: ['hello_world'] 
+    });
+};
+</script>
+</html>

@@ -41,7 +41,10 @@
           <ul class="nav nav-pills pull-right">
           </ul>
         </nav>
-        <h3 class="text-muted"><input style="height:100px;width:150px" type = "image" src = "img/logo.png" onclick = "location.href = 'index.html';"></input></h3>
+        <h3 class="text-muted">
+		<input style="height:100px;width:150px" type = "image" src = "img/logo.png" onclick = "location.href = 'index.html';"></input>
+		<h3 class="center-block">Room Code: <strong id="roomCode"></strong></h3>
+		</h3>
       </div>
 	</div>
 
@@ -56,7 +59,7 @@
       <h1 id = "feedback">How do you feel about this lecture?</h1>
 
       <input id="boring" style="height:100px;width:100px" type="image" onclick="publishFeedback(this)" src="img/sleeping-face.png" ></input>
-      <input id="bad" style="height:100ppx;width:100px" type = "image" onclick="publishFeedback(this)" src="img/disappointed-face.png" ></input>
+      <input id="bad" style="height:100px;width:100px" type = "image" onclick="publishFeedback(this)" src="img/disappointed-face.png" ></input>
       <input id="good" style="height:100px;width:100px" type = "image" onclick="publishFeedback(this)" src="img/grinning-face.png" ></input>
 
     </div>
@@ -64,10 +67,20 @@
 <script src="https://cdn.pubnub.com/sdk/javascript/pubnub.4.4.3.js"></script>
 <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 <script>
-
-var s_channel = 's_handler', t_channel = 't_handler';
 var question = $('#question');
 var O1 = $('#O1'), O2 = $('#O2'), O3 = $('#O3'), O4 = $('#O4');
+
+var roomcode = getRoomCode();
+$("#roomCode").html(roomcode);
+var t_channel = 'teacher.room--' + roomcode, s_channel = 'student.room--' + roomcode
+
+function getRoomCode() {
+	if(window.location.search.substring(1).split('?')[0].split('=')[0] !== 'room') {
+      return null;
+    } else {
+      return window.location.search.substring(1).split('?')[0].split('=')[1];
+    }
+}
 
 var pubnub = new PubNub ({
 	publish_key:'pub-c-18f40226-157c-4c75-b3a8-95302621baaf',
@@ -76,28 +89,29 @@ var pubnub = new PubNub ({
 });
 
 pubnub.subscribe({
-	channel: s_channel
+	channels: [s_channel]
 });
 
 pubnub.addListener({
-	message: function(text) {
-		if (text[0] === 0) {
-			question.html(text[1]);
+	message: function(payload) {
+		console.log('message received');
+		console.log(payload.message);
+		var message = payload.message;
+		if (message.type == "question") {
+			question.html(message.data[0]);
 			O1.css("visibility", "visible");
-			O1.attr("value", text[2][0]);
+			O1.attr("value", message.data[1][0]);
 			O2.css("visibility", "visible");
-			O2.attr("value", text[2][1]);
-			if (text[2][2] != "") {
+			O2.attr("value", message.data[1][1]);
+			if (message.data[1][2] != "") {
 				O3.css("visibility", "visible");
-				O3.attr("value", text[2][2]);
+				O3.attr("value", message.data[1][2]);
 			}
-			if (text[2][3] != "") {
+			if (message.data[1][3] != "") {
 				O4.css("visibility", "visible");
-				O4.attr("value", text[2][3]);
+				O4.attr("value", message.data[1][3]);
 			}
-			console.log(text);
-			console.log(text[2])
-		} else if (text[0] == 5) {
+		} else if (message.type == "stop_polling") {
 			console.log("Polling stopped.");
 			publishAnswer("");
 		}
@@ -107,8 +121,11 @@ pubnub.addListener({
 function publishAnswer(num) {
 	if (num != "") {
 		pubnub.publish({
-			channel: t_channel, message : num,
-			action : "answer"
+			channel: t_channel, 
+			message : { 
+				data : num,
+				type : "answer"
+			}
 		});
 	}
 	question.html("Awaiting Next Question...");
@@ -135,7 +152,11 @@ function publishFeedback(el)
 	}
   
 	pubnub.publish({
-		channel:o_channel, message : [6, num]
+		channel : t_channel, 
+		message : {
+			data : num,
+			type : "feedback"
+		}
 	});
 }
 </script>

@@ -92,6 +92,7 @@ roomCode.html(roomcode);
 
 var h_channel = "rooms" //handler channel
 var t_channel = "teacher.room--" + roomcode; //teacher channel
+var q_channel = "questions.room--" + roomcode; //question channel (store questions)
 
 var pubnub = new PubNub ({
 	publish_key:'pub-c-18f40226-157c-4c75-b3a8-95302621baaf',
@@ -99,11 +100,12 @@ var pubnub = new PubNub ({
 	ssl:true
 });
 
-pubnub.publish({
+/*pubnub.publish({
 	channel : h_channel,
 	message : roomcode
-});
+});*/
 
+//USE ROOM 4827 for testing purposes!!!
 function getRoomCode() {
 	if(window.location.search.substring(1).split('?')[0].split('=')[0] !== 'room') {
       return null;
@@ -116,7 +118,7 @@ function createQuestion() {
 	if (question.val().replace(/ /g,'') != "" && O1.val().replace(/ /g,'') != "" && O2.val().replace(/ /g,'') != "") {
 	console.log(question.val());
 		pubnub.publish({
-				channel : t_channel, 
+				channel : q_channel, 
 				message : {
 					room : roomcode,
 					question : [question.val(), [O1.val(), O2.val(), O3.val(), O4.val()]],
