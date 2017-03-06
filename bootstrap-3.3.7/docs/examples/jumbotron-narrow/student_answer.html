@@ -91,6 +91,7 @@ var pubnub = new PubNub ({
 pubnub.subscribe({
 	channels: [s_channel]
 });
+console.log("subscribed to channel", s_channel);
 
 pubnub.addListener({
 	message: function(payload) {
