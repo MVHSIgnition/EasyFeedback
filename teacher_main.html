@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="img/favicon.ico">
+    <title>EZFeedback</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="css/jumbotron-narrow.css" rel="stylesheet">
+  </head>
+  
+  <style>
+	.center-block {
+	   margin-left:auto;
+	   margin-right:auto;
+	   display:block;
+	}
+  </style>
+  
+<body>
+	<div class="container">
+      <div class="header clearfix">
+        <nav>
+        </nav>
+        <h3 class="text-muted">
+			<input style="height:100px;width:150px" type = "image" src = "img/logo.png" onclick = "location.href = 'index.html';"></input>
+			<h3 class="center-block">Room Code: <strong id="roomCode"></strong></h3>
+		</h3>
+      </div>
+
+      <!--<div class="jumbotron">-->
+	  <!--start your code-->
+		
+		<button id="btn" class="btn btn-primary" type="button" style="visibility:visible" data-target="#all" onclick="startPoll()">Publish Next Question</button>
+		
+		<div class="row">
+			<div class="col-sm-8">
+				<div id="all" class="collapse">
+
+				  <h1 id="question" style="visibility:hidden;"></h1>
+				  <h1 id="data" style="visibility:hidden">Data</h1>
+
+				  <div id="aBarGroup">
+					  <strong id="a">A</strong><p id="aval" align="right">0</p>
+					  <div class="progress">
+					  <div id="aBar"class="progress-bar" role="progressbar" aria-valuenow="0"
+					  aria-valuemin="0" aria-valuemax="100" style="width:0%">
+						<span class="sr-only" id="AP">0%</span>
+					  </div>
+					  </div>
+				  </div>
+				  
+				  <div id="bBarGroup">
+					  <strong id="b">B</strong><p id="bval" align="right">0</p>
+					  <div class="progress">
+					  <div id="bBar" class="progress-bar" role="progressbar" aria-valuenow="0"
+					  aria-valuemin="0" aria-valuemax="100" style="width:0%">
+						<span class="sr-only" id="BP">0%</span>
+					  </div>
+					  </div>
+				  </div>
+				  
+				  <div id="cBarGroup">
+					  <strong id="c">C</strong><p id="cval" align="right">0</p>
+					  <div class="progress">
+					  <div id="cBar" class="progress-bar" role="progressbar" aria-valuenow="0"
+					  aria-valuemin="0" aria-valuemax="100" style="width:0%">
+						<span class="sr-only" id="CP">0%</span>
+					  </div>
+					  </div>
+				  </div>
+				  
+				  <div id="dBarGroup">
+					  <strong id="d">D</strong><p id="dval" align="right">0</p>
+					  <div class="progress">
+					  <div id="dBar" class="progress-bar" role="progressbar" aria-valuenow="0"
+					  aria-valuemin="0" aria-valuemax="100" style="width:0%">
+						<span class="sr-only" id="DP">0%</span>
+					  </div>
+					  </div>
+				  </div>
+
+				</div>
+			</div>
+			
+			<div class="col-sm-4">
+				<div id="feedback">
+					<h1>FEEDBACK</h1>
+						<strong id="bo">Boring</strong>
+					<div class="progress">
+					  <div id="bore" class="progress-bar" role="progressbar" aria-valuenow="0"
+					  aria-valuemin="0" aria-valuemax="100" style="width:0%">
+						<span class="sr-only" id="BP">0%</span>
+					  </div>
+					  </div>
+					  <strong id="ba">Bad</strong>
+					  <div class="progress">
+					  <div id="bad" class="progress-bar" role="progressbar" aria-valuenow="0"
+					  aria-valuemin="0" aria-valuemax="100" style="width:0%">
+						<span class="sr-only" id="CP">0%</span>
+					  </div>
+					  </div>
+					  <strong id="g">Good</strong>
+					  <div class="progress">
+					  <div id="good" class="progress-bar" role="progressbar" aria-valuenow="0"
+					  aria-valuemin="0" aria-valuemax="100" style="width:0%">
+						<span class="sr-only" id="DP">0%</span>
+							  </div>
+					  </div>
+				</div>
+			</div>
+		</div>
+		<!--</div>-->
+	</div>
+
+</body>
+
+
+<script src="https://cdn.pubnub.com/sdk/javascript/pubnub.4.4.3.js"></script>
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+<script>
+var total = 0;
+
+var anum = 0, bnum = 0, cnum =0, dnum = 0;
+var stopvar = false;
+
+var a = $('#a'), b = $('#b'), c = $('#c'), d = $('#d'), button = $('#btn'),button2 = $('#reset'), data = $('#data');
+var aval = $('#aval'), bval = $('#bval'), cval = $('#cval'), dval = $('#dval')
+var all = $('#all');
+var AP = $('#AP'), BP = $('#BP'), CP = $('#CP'), DP = $('#DP');
+var aBar = $("#aBar"), bBar = $("#bBar"), cBar = $("#cBar"), dBar = $("#dBar");
+var qhtml = $('#question');
+var good = $("#good"), bad = $("#bad"), bore = $("#bore");
+var borenum = 0, goodnum = 0, badnum = 0;
+var totemot;
+
+var roomcode = getRoomCode();
+$("#roomCode").html(roomcode);
+
+var t_channel = 'teacher.room--' + roomcode, s_channel = 'student.room--' + roomcode, q_channel = "questions.room--" + roomcode;
+
+function getRoomCode() {
+	if(window.location.search.substring(1).split('?')[0].split('=')[0] !== 'room') {
+      return null;
+    } else {
+      return window.location.search.substring(1).split('?')[0].split('=')[1];
+    }
+}
+
+var pubnub = new PubNub({
+	publish_key:'pub-c-18f40226-157c-4c75-b3a8-95302621baaf',
+	subscribe_key:'sub-c-f005c270-f6f7-11e6-b0ac-0619f8945a4f',
+	ssl:true
+	});
+	
+console.log("subscribing to channel: ", t_channel);
+pubnub.subscribe({
+		channels: [t_channel]
+	});
+	
+pubnub.addListener({
+	
+	message: function(payload) {
+		var message = payload.message;
+		console.log('received message');
+		console.log(message);
+		if(message.type == "answer"){
+
+				if(message.data == 1){
+					anum += 1;
+					aval.html(anum);
+					console.log(anum);
+					
+				}
+				else if(message.data == 2){
+					bnum += 1;
+					bval.html(bnum);
+					console.log(bnum);
+					
+				}
+				else if(message.data == 3){
+					cnum += 1;
+					cval.html(cnum);
+					console.log(cnum);
+					
+				}
+				else if(message.data == 4){
+					dnum += 1;
+					dval.html(dnum);
+					console.log(dnum);
+					
+				}
+				total = anum+bnum+cnum+dnum;
+				 
+				//DP.innerHTML = Math.round(dnum/total * 100) + "%";
+				//dBar.style.width = Math.round(dnum/total) * 100 + "%";
+				dBar.css("width", Math.round(dnum/total * 100) + "%");
+				//CP.innerHTML = Math.round(cnum/total * 100) + "%";
+				cBar.css("width", Math.round(cnum/total * 100) + "%");
+				//cBar.style.width = Math.round(cnum/total) * 100 + "%";
+				//BP.innerHTML = Math.round(bnum/total * 100) + "%";
+				bBar.css("width", Math.round(bnum/total * 100) + "%");
+				//bBar.style.width = Math.round(bnum/total) * 100 + "%";
+				//AP.innerHTML = Math.round(anum/total * 100) + "%";
+				aBar.css("width", Math.round(anum/total * 100) + "%");
+				//aBar.style.width = Math.round(anum/total) * 100 + "%";
+				
+
+			}
+			else if(message.type == "question"){
+				qhtml.html(message.data[0]); //0 is the question
+				a.html(message.data[1][0]);
+				b.html(message.data[1][1]);
+				
+				if (message.data[1][2] != "") {
+					c.html(message.data[1][2]);
+				} else {
+					$('#cBarGroup').css("visibility", "hidden");
+				}
+				
+				if (message.data[1][3] != "") {
+					d.html(message.data[1][3]);
+				} else {
+					$('#dBarGroup').css("visibility", "hidden");
+				}
+			}
+			else if(message[0] == 4){
+				stopvar = true;
+			} 
+			else if(message.type == "feedback"){
+			console.log("emots");
+				if (message.data == 1) {
+					borenum+= 1;
+				}else if (message.data == 2) {
+					badnum+= 1;
+				} else if (message.data == 3) {
+					goodnum+= 1;
+				}
+				
+				
+				totemot = borenum+goodnum+badnum;
+				bore.css("width", Math.round(borenum/totemot * 100) + "%");
+				good.css("width", Math.round(goodnum/totemot * 100) + "%");
+				bad.css("width", Math.round(badnum/totemot * 100) + "%");
+			}
+	},
+	presence: function(p) {
+	},
+	status: function(s) {
+		// handle status
+	}
+});
+
+function startPoll(){
+	qhtml.css("visibility","visible");
+	all.slideToggle('slow');
+	$('#dBarGroup').css("visibility", "visible");
+	$('#cBarGroup').css("visibility", "visible");
+	button.attr("class","btn");
+	button.attr("onclick","resetAll()");
+	button.html("Stop Polling");
+	console.log('start polling');
+	
+	pubnub.publish({
+			channel : q_channel, 
+			message : {
+				room : roomcode,
+				action : "retrieve" //retrieve next question (publishes to student inside the handler)
+			}
+		});
+	}
+function resetAll(){
+	//WRITE SOMETHING HERE TO STORE THE ANSWERS TO THE QUESTION ()
+	/*pubnub.publish({
+		channel : t_channel, message : [3,qhtml.value,[anum,bnum,cnum,dnum]]
+	})*/
+	
+	pubnub.publish({
+		channel : s_channel,
+		message : {type : "stop_polling"}
+	});
+	
+	total = 0;
+	anum = 0, bnum = 0, cnum =0, dnum = 0;
+	if(stopvar == false){
+		//qhtml.css("visibility","hidden");
+		all.slideToggle('slow');
+		//all.css("visibility","hidden");
+		button.attr("class","btn btn-primary");
+		button.attr("onclick","startPoll()");
+		button.html("Publish Next Question");
+		aBar.css("width", "0%");
+		bBar.css("width", "0%");
+		cBar.css("width", "0%");
+		dBar.css("width", "0%");
+		aval.html("0");
+		bval.html("0");
+		cval.html("0");
+		dval.html("0");
+	}else{
+		qhtml.style.visibility = "hidden";
+		a.style.visibility = "hidden";
+		a.innerHTML = "a: 0";
+		AP.innerHTML = "0%";
+		b.style.visibility = "hidden";
+		b.innerHTML = "b: 0";
+		BP.innerHTML = "0%";
+		c.style.visibility = "hidden";
+		c.innerHTML = "c: 0";
+		CP.innerHTML = "0%";
+		d.style.visibility = "hidden";
+		d.innerHTML = "d: 0";
+		DP.innerHTML = "0%";
+		button.css("visibility","hidden");
+		button2.css("visibility","hidden");
+		data.style.visibility = "visible";
+	}
+}
+</script>
+</html>
